@@ -17,14 +17,45 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: ghostwhite;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: slateblue;
+}
+
+.App-header button {
+  padding: 1rem;
+  font-size: 1.5rem;
+  background-color: ghostwhite;
+  color: slateblue;
+  font-weight: bold;
+  margin: 1rem;
+}
+
+.App-header .buttonSection {
+  display: flex;
+}
+
+.App-header button:hover {
+  background-color: slateblue;
+  color: ghostwhite;
+}
+
+.component {
+  display: flex;
+  flex-direction: column;
+}
+
+.component input {
+  font-size: 1.5rem;
+  padding: .5rem;
+  color: slateblue;
+  font-weight: bold;
+  border-radius: .5rem;
 }
 
 .App-link {

@@ -1,26 +1,37 @@
 import React, { Component } from 'react';
 
 class ClassComponent extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      name: ''
+      inputField: '',
     }
   }
+
   componentDidMount() {
-    console.log("class component did mount")
+    console.log("class component is mounted")
+    this.timer = setTimeout(() => {
+      this.setState({inputField: 'Time out'})
+    }, 2000)
+    // perform another unrelated task here...
   }
 
   componentWillUnmount() {
-    console.log("class component will unmount")
+    clearTimeout(this.timer);
   }
-  inputChangeHandler = (e) => {
-    this.setState({name: e.target.value})
+
+  inputFieldChangeHandler = (e) => {
+    this.setState({inputField: e.target.value});
   }
+
   render() {
     return (
-      <div>
-        <input type="text" value={this.state.name} onChange={this.inputChangeHandler} />
+      <div className="component">
+        <h2>Class Component</h2>
+        <p>Counter: {this.props.counter}</p>
+        <p>SecondCounter: {this.props.secondCounter}</p>
+        <input type="text" placeholder="Enter text here" value={this.state.inputField} onChange={this.inputFieldChangeHandler}/>
+        <p>{this.state.inputField}</p>
       </div>
     )
   }
