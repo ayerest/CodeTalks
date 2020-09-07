@@ -10,35 +10,35 @@ class ClassComponent extends Component {
   }
 
   componentDidMount() {
-    console.log("class component is mounted")
+    console.log("component did mount");
     this.timer = setTimeout(() => {
       this.setState({inputField: 'Time out'})
     }, 2000)
-    // perform another unrelated task here...
-    this.setState({secondInputField: this.props.secondCounter})
   }
 
   componentWillUnmount() {
+    console.log("component will unmount");
     clearTimeout(this.timer);
   }
 
   componentDidUpdate() {
-    console.log("class component did update")
+    console.log("component did update");
   }
 
-  shouldComponentUpdate(prevProps, nextState) {
-    if (prevProps.counter % 3 === 0) {
-      return true;
-    }
-    return false;
+  shouldComponentUpdate() {
+    // if (this.props.secondCounter % 3 === 0) {
+    //   return true;
+    // }
+    // return false;
+    return true;
   }
 
   inputFieldChangeHandler = (e) => {
-    this.setState({inputField: e.target.value});
+    this.setState({inputField: e.target.value})
   }
 
   secondInputFieldChangeHandler = (e) => {
-    this.setState({ secondInputField: e.target.value });
+    this.setState({secondInputField: e.target.value})
   }
 
   render() {
@@ -48,7 +48,7 @@ class ClassComponent extends Component {
         <p>Counter: {this.props.counter}</p>
         <p>SecondCounter: {this.props.secondCounter}</p>
         <input type="text" placeholder="Enter text here" value={this.state.inputField} onChange={this.inputFieldChangeHandler}/>
-        <input type="text" placeholder="Enter text here" value={this.state.secondInputField} onChange={this.secondInputFieldChangeHandler} />
+        <input type="text" placeholder="Enter text here" value={this.state.secondInputField} onChange={this.secondInputFieldChangeHandler}/>
         <ul>
           <li>{this.state.inputField}</li>
           <li>{this.state.secondInputField}</li>

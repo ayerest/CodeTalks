@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
 const FunctionalComponent = (props) => {
-  const [inputField, setInputField] = useState('');
-  const [secondInputField, setSecondInputField] = useState('');
-
-  const inputFieldChangeHandler = (e) => {
-    setInputField(e.target.value);
-  }
-
-  const secondInputFieldChangeHandler = (e) => {
-    setSecondInputField(e.target.value);
-  }
+  const [inputField, setInputField] = useState('');const [secondInputField, setSecondInputField] = useState('');
 
   useEffect(() => {
-    console.log("functional component use effect");
+    console.log("use effect is running")
     const timer = setTimeout(() => {
-      setInputField('Time out')
+      setInputField('Time out');
     }, 2000)
     return () => {
       clearTimeout(timer);
@@ -23,9 +14,19 @@ const FunctionalComponent = (props) => {
   }, [])
 
   useEffect(() => {
-    console.log("third use effect")
-    setSecondInputField(props.secondCounter)
+    console.log("second useEffect function")
+    setSecondInputField(props.secondCounter);
   }, [props.secondCounter])
+
+  
+
+  const inputFieldChangeHandler = (e) => {
+    setInputField(e.target.value);
+  }
+
+  const secondInputFieldHandler = (e) => {
+    setSecondInputField(e.target.value);
+  }
 
   return (
     <div className="component">
@@ -33,7 +34,7 @@ const FunctionalComponent = (props) => {
       <p>Counter: {props.counter}</p>
       <p>SecondCounter: {props.secondCounter}</p>
       <input type="text" placeholder="Enter text here" value={inputField} onChange={inputFieldChangeHandler} />
-      <input type="text" placeholder="Enter text here" value={secondInputField} onChange={secondInputFieldChangeHandler} />
+      <input type="text" placeholder="Enter text here" value={secondInputField} onChange={secondInputFieldHandler} />
       <ul>
         <li>{inputField}</li>
         <li>{secondInputField}</li>
