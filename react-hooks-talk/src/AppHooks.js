@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import "./App.css";
 import ClassComponent from "./Components/ClassComponent";
 import FunctionalComponent from "./Components/FunctionalComponent";
-import { connect } from "react-redux";
 
 function App() {
   const [displayClassComponent, setDisplayClassComponent] = useState(true);

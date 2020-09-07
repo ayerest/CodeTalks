@@ -4,7 +4,11 @@ const FunctionalComponent = (props) => {
   const [inputField, setInputField] = useState('');const [secondInputField, setSecondInputField] = useState('');
 
   useEffect(() => {
-    console.log("use effect is running")
+    console.log("#1) use effect that runs every render")
+  })
+
+  useEffect(() => {
+    console.log("#2) use effect with empty dependency array - only runs for first render after component is mounted")
     const timer = setTimeout(() => {
       setInputField('Time out');
     }, 2000)
@@ -14,7 +18,7 @@ const FunctionalComponent = (props) => {
   }, [])
 
   useEffect(() => {
-    console.log("second useEffect function")
+    console.log("#3) useEffect with secondCounter in dependency array - only runs when secondCounter is updated")
     setSecondInputField(props.secondCounter);
   }, [props.secondCounter])
 
