@@ -1,60 +1,96 @@
 import React, { Component } from 'react';
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+
 
 class ClassComponent extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
-      inputField: '',
-      secondInputField: '',
-    }
+      firstInputField: "",
+      secondInputField: "",
+    };
   }
 
   componentDidMount() {
-    console.log("component did mount");
-    this.timer = setTimeout(() => {
-      this.setState({inputField: 'Time out'})
+    console.log("Component did mount");
+    this.timer = setTimeout(()=> {
+      this.setState({secondInputField: 'Time out'})
     }, 2000)
   }
 
   componentWillUnmount() {
-    console.log("component will unmount");
     clearTimeout(this.timer);
   }
 
-  componentDidUpdate() {
-    console.log("component did update");
+  componentDidUdate() {
+    console.log("Component will update");
   }
 
-  shouldComponentUpdate() {
-    // if (this.props.secondCounter % 3 === 0) {
-    //   return true;
-    // }
-    // return false;
-    return true;
-  }
+  // shouldComponentUpdate(prevProps, nextState) {
+  //   if (prevProps.counter % 3 === 0) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
-  inputFieldChangeHandler = (e) => {
-    this.setState({inputField: e.target.value})
-  }
+  firstInputFieldChangeHandler = (e) => {
+    this.setState({ firstInputField: e.target.value });
+  };
 
   secondInputFieldChangeHandler = (e) => {
-    this.setState({secondInputField: e.target.value})
+    this.setState({ secondInputField: e.target.value })
   }
 
   render() {
     return (
-      <div className="component">
+      <div className="component class">
         <h2>Class Component</h2>
-        <p>Counter: {this.props.counter}</p>
-        <p>SecondCounter: {this.props.secondCounter}</p>
-        <input type="text" placeholder="Enter text here" value={this.state.inputField} onChange={this.inputFieldChangeHandler}/>
-        <input type="text" placeholder="Enter text here" value={this.state.secondInputField} onChange={this.secondInputFieldChangeHandler}/>
-        <ul>
-          <li>{this.state.inputField}</li>
-          <li>{this.state.secondInputField}</li>
-        </ul>
+        <div className="counter-holder">
+          <p>Counter: {this.props.counter}</p>
+          <Button
+            variant="contained"
+            color="primary"
+            type="button"
+            onClick={this.props.incrementCounter}
+          >
+            +
+          </Button>
+        </div>
+        <div className="counter-holder">
+          <p>Counter: {this.props.secondCounter}</p>
+          <Button
+            variant="contained"
+            type="button"
+            onClick={this.props.incrementSecondCounter}
+          >
+            +
+          </Button>
+        </div>
+        <div className="inputInfo">
+          <div className="inputHolder">
+            <TextField
+              id="filled-basic"
+              label="Input 1"
+              variant="outlined"
+              value={this.state.firstInputField}
+              onChange={this.firstInputFieldChangeHandler}
+            />
+            <TextField
+              id="filled-basic"
+              label="Input 2"
+              variant="outlined"
+              value={this.state.secondInputField}
+              onChange={this.secondInputFieldChangeHandler}
+            />
+          </div>
+          <div className="inputHolder">
+            <p>First input: {this.state.firstInputField}</p>
+            <p>Second input: {this.state.secondInputField}</p>
+          </div>
+        </div>
       </div>
-    )
+    );
   }
 }
 

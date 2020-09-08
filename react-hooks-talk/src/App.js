@@ -3,36 +3,49 @@ import './App.css';
 import ClassComponent from './Components/ClassComponent';
 import FunctionalComponent from './Components/FunctionalComponent';
 import { connect } from 'react-redux';
+import Switch from "@material-ui/core/Switch";
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
       displayClassComponent: true,
-      counter: 0,
-      secondCounter: 0,
     }
   }
-  // incrementCounter = () => {
-  //   this.setState({ counter: this.state.counter + 1 })
-  // }
-  incrementSecondCounter = () => {
-    this.setState({ secondCounter: this.state.secondCounter + 1 })
-  }
+  
   toggleDisplay = () => {
     this.setState({displayClassComponent: !this.state.displayClassComponent})
   }
+
   render () {
     return (
-      <div className="App-header">
-        <button type="button" onClick={this.toggleDisplay}>Toggle Components</button>
-        <div className="buttonSection">
-          <button type="button" onClick={this.props.incrementCounter}>Increment Counter</button>
-          <button type="button" onClick={this.incrementSecondCounter}>Increment Second Counter</button>
+      <div className="App">
+        <div className="toggle-switch">
+          <p>Toggle Components</p>
+          <Switch
+            checked={this.state.displayClassComponent}
+            onChange={this.toggleDisplay}
+            color="primary"
+            inputProps={{ "aria-label": "primary checkbox" }}
+          />
         </div>
-        {this.state.displayClassComponent ? 
-          <ClassComponent counter={this.props.counter} secondCounter={this.state.secondCounter}/> :
-          <FunctionalComponent counter={this.props.counter} secondCounter={this.state.secondCounter}/>}
+        <div className="App-header">
+          {this.state.displayClassComponent ? (
+            <ClassComponent
+              counter={this.props.counter}
+              secondCounter={this.props.secondCounter}
+              incrementCounter={this.props.incrementCounter}
+              incrementSecondCounter={this.props.incrementSecondCounter}
+            />
+          ) : (
+            <FunctionalComponent
+              counter={this.props.counter}
+              secondCounter={this.props.secondCounter}
+              incrementCounter={this.props.incrementCounter}
+              incrementSecondCounter={this.props.incrementSecondCounter}
+            />
+          )}
+        </div>
       </div>
     );
   }
@@ -40,13 +53,15 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    counter: state.counter
+    counter: state.counter,
+    secondCounter: state.secondCounter,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    incrementCounter: () => dispatch({type: 'INCREMENT'})
+    incrementCounter: () => dispatch({type: 'INCREMENT'}),
+    incrementSecondCounter: () => dispatch({type: 'INCREMENT2'})
   }
 }
 
