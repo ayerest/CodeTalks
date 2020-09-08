@@ -7,8 +7,6 @@ class ClassComponent extends Component {
     this.state = {
       name: ''
     }
-    // Step 2a: timer associated with instance to be able to clear in componentwillunmount
-    this.timer = null;
   }
   // Step 2: Add side effect in the lifecycle methods
   componentDidMount() {
@@ -26,6 +24,7 @@ class ClassComponent extends Component {
   }
 
   // step 3a: only render if the counter is even
+  // TODO: need a better example here - not clear enough, add componentDidUpdate
   shouldComponentUpdate(nextProps, nextState) {
     if (nextProps.counter % 2 === 0) {
       return true;
@@ -36,6 +35,8 @@ class ClassComponent extends Component {
   inputChangeHandler = (e) => {
     this.setState({name: e.target.value})
   }
+
+  // TODO: update to reflect most recent changes
   render() {
     return (
       <div className="component">
