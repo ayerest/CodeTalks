@@ -43,11 +43,11 @@ class ClassComponent extends Component {
         previousGuesses: [...state.previousGuesses, state.guessInput],
         checkingGuess: false,
       }));
-    }, 2000)
+    }, 1000)
   };
 
   handleResetGame = () => {
-    this.setState({previousGuesses: [], checkingGuess: false});
+    this.setState({previousGuesses: [], checkingGuess: false, guessInput: ''});
     return this.props.resetGame();
   }
 
@@ -55,6 +55,13 @@ class ClassComponent extends Component {
     return (
       <div className="component class">
         <h2>Class Component</h2>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={this.handleResetGame}
+        >
+          Reset Game
+        </Button>
         {this.state.checkingGuess && <CircularProgress />}
         {this.props.guessedCorrectly && <h3>"You Guessed Correctly! I like you the way you are"</h3>}
         {this.props.gameOver && !this.props.guessedCorrectly && <h3>"Game Over. I said, 'see you later, boy'"</h3>}
@@ -63,10 +70,9 @@ class ClassComponent extends Component {
         </div>
         <div className="inputInfo">
           <div className="inputHolder">
-            <label>Guess the word!</label>
             <TextField
               id="filled-basic"
-              label="Input 1"
+              label="Guess the phrase"
               variant="outlined"
               value={this.state.guessInput}
               onChange={this.handleGuessInputChange}
@@ -75,28 +81,21 @@ class ClassComponent extends Component {
               variant="contained"
               color="primary"
               onClick={this.handleGuessSubmission}
-              disabled={this.props.gameOver}
+              disabled={this.props.gameOver || this.state.checkingGuess}
             >
               submit guess
             </Button>
           </div>
-          <div className="inputHolder">
-            <p>Guesses so far...</p>
-            <ul>
-              {this.state.previousGuesses &&
-                this.state.previousGuesses.map((guess) => (
-                  <li key={Math.random()}>{guess}</li>
-                ))}
-            </ul>
-          </div>
         </div>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={this.handleResetGame}
-        >
-          Reset Game
-        </Button>
+        <div className="inputHolder">
+          <p>Guesses so far...</p>
+          {this.state.previousGuesses.length > 0 && <ul>
+            {this.state.previousGuesses &&
+              this.state.previousGuesses.map((guess) => (
+                <li key={Math.random()}>{guess}</li>
+              ))}
+          </ul>}
+        </div>
       </div>
     );
   }
@@ -104,7 +103,6 @@ class ClassComponent extends Component {
 const mapStateToProps = (state) => {
   return {
     guessNumber: state.guessNumber,
-    secretWord: state.secretWord,
     guessedCorrectly: state.guessedCorrectly,
     gameOver: state.gameOver,
   };

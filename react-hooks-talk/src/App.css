@@ -18,6 +18,7 @@
   background-color: ghostwhite;
   border-radius: 1rem;
   border: 1px solid cornflowerblue;
+  box-shadow: 1px 1px 2px lightslategrey;
 
 }
 
@@ -52,7 +53,22 @@
   flex-direction: column;
 }
 
+.inputHolder p {
+  font-size: 1.5rem;
+  margin-bottom: .25rem;
+}
+
+.inputHolder ul {
+  font-size: 1.25rem;
+  background-color: thistle;
+  padding: .5rem;
+  list-style: inside;
+  border-radius: .5rem;
+  border: 1px solid ghostwhite;
+  box-shadow: 1px 1px 2px ghostwhite;
+}
+
 .inputHolder .MuiFormControl-root.MuiTextField-root {
   background-color: thistle;
-  margin: 1rem;
+  /* margin: 1rem; */
 }

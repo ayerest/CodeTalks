@@ -54,7 +54,7 @@ const FunctionalComponent = (props) => {
     }
 
     return (
-        <div className="component class">
+        <div className="component">
             <h2>Functional Component</h2>
             {checkingGuess && <CircularProgress />}
             {gameOver && !guessedCorrectly && <h3>Game Over!</h3>}

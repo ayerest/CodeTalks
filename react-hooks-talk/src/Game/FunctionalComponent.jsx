@@ -50,11 +50,11 @@ const FunctionalComponent = () => {
     }
 
     return (
-      <div className="component class">
+      <div className="component">
         <h2>Functional Component</h2>
         {checkingGuess && <CircularProgress />}
-        <h3>{guessedCorrectly && "You won!"}</h3>
-        <h3>{!guessedCorrectly && gameOver && "Game Over!"}</h3>
+        {guessedCorrectly && <h3>You won!</h3>}
+        {!guessedCorrectly && gameOver && <h3>Game Over!</h3>}
         <Button
           variant="contained"
           color="secondary"
@@ -67,10 +67,9 @@ const FunctionalComponent = () => {
         </div>
         <div className="inputInfo">
           <div className="inputHolder">
-            <label>Guess the word!</label>
             <TextField
               id="filled-basic"
-              label="Input 1"
+              label="Guess the phrase"
               variant="outlined"
               value={guessInput}
               onChange={handleGuessInputChange}
@@ -79,17 +78,19 @@ const FunctionalComponent = () => {
               variant="contained"
               color="primary"
               onClick={handleGuessSubmission}
-              disabled={gameOver}
+              disabled={gameOver || checkingGuess}
             >
               Submit Guess
             </Button>
           </div>
-          <div className="inputHolder">
+        </div>
+        <div className="inputHolder">
             <p>Guesses so far...</p>
-            <ul>
-             {previousGuesses && previousGuesses.map((guess) => <li key={Math.random()}>{guess}</li>)}
-            </ul>
-          </div>
+            {previousGuesses.length > 0 &&
+                <ul>
+                    {previousGuesses && previousGuesses.map((guess) => <li key={Math.random()}>{guess}</li>)}
+                </ul>
+            }
         </div>
       </div>
     );
