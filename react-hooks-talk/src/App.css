@@ -16,6 +16,9 @@
   justify-content: flex-start;
   height: 95vh;
   background-color: ghostwhite;
+  border-radius: 1rem;
+  border: 1px solid cornflowerblue;
+
 }
 
 .component.class {

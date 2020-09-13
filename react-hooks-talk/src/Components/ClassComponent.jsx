@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 
-
 class ClassComponent extends Component {
   constructor(props) {
     super(props);
@@ -26,6 +25,7 @@ class ClassComponent extends Component {
   componentDidUdate() {
     console.log("Component will update");
   }
+  // TODO: set up a child component with props that should only update if the props change to use as an example with useEffect dependency array or pass down another prop from App.js that can change in the parent but not in the class component... will need to think about this.
 
   // shouldComponentUpdate(prevProps, nextState) {
   //   if (prevProps.counter % 3 === 0) {
