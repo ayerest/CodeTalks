@@ -21,7 +21,8 @@ const FunctionalComponent = () => {
             clearTimeout(timer);
         }
         // including setGuessInput keeps this from running every time the input is altered
-    }, [setGuessInput, timer])
+        // memory leak here...need to figure out why
+    }, [])
 
     useEffect(() => {
         // run this every time the component is mounted, but not for render updates

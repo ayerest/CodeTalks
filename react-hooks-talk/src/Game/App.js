@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import Switch from "@material-ui/core/Switch";
 import Container from "@material-ui/core/Container";
-import ClassComponent from "./ClassComponent";
-import FunctionalComponent from "./FunctionalComponent";
+// import ClassComponent from "./ClassComponent";
+// import FunctionalComponent from "./FunctionalComponent";
+import FunctionalComponent from './FunctionalComponentPracticeTwo';
+import ClassComponent from './ClassComponentPractice';
 import '../App.css';
 
 // import FunctionalComponent from './FunctionalComponentPractice';

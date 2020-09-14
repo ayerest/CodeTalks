@@ -4,13 +4,19 @@ const maxGuesses = 5;
 
 const initialState = {
   guessNumber: maxGuesses,
-  secretWord: phrases[Math.floor(Math.random() * phrases.length)],
+  secretWords: [...phrases],
   guessedCorrectly: false,
   gameOver: false,
+  secretWord: '',
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'SELECTPHRASE':
+      return {
+        ...state,
+        secretWord: state.secretWords[Math.floor(Math.random() * state.secretWords.length)]
+      }
     case 'DECREMENT':
       return {
         ...state,
