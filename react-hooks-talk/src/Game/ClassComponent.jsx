@@ -15,12 +15,6 @@ class ClassComponent extends Component {
   componentDidMount() {
     console.log("Component did mount")
     // dispatch action to select secret phrase
-    this.props.resetGame();
-    this.delay = setTimeout(() => {
-      this.props.selectPhrase();
-      this.setState({ gettingSecretPhrase: false });
-    }, 2000)
-
   }
 
   componentDidUpdate() {
@@ -30,18 +24,13 @@ class ClassComponent extends Component {
   componentWillUnmount() {
     console.log("Component will unmount")
     // dispatch action to reset game
-    this.props.resetGame();
-    clearTimeout(this.delay);
   }
 
   guessInputChangeHandler = (e) => {
-    this.setState({guessInput: e.target.value});
   };
 
   guessSubmitHandler = () => {
     // dispatch 'CHECKGUESS' action to the redux store
-    this.props.checkGuess(this.state.guessInput);
-    this.setState((prevState, props) => ({previousGuesses: [...prevState.previousGuesses, prevState.guessInput], guessInput: ''}));
   };
 
   render() {
@@ -49,10 +38,10 @@ class ClassComponent extends Component {
     return (
       <div className="component">
         <h2>Class Component</h2>
-        {this.state.gettingSecretPhrase && <h3>Selecting the secret phrase...</h3>}
-        {!this.state.gettingSecretPhrase &&<h3>Secret phrase has been selected</h3>}
-        {this.props.guessedCorrectly && <h3>You won!</h3>}
-        {this.props.gameOver && !this.props.guessedCorrectly && <h3>No more guesses!</h3>}
+        {/* {this.state.gettingSecretPhrase && <h3>Selecting the secret phrase...</h3>}
+        {!this.state.gettingSecretPhrase &&<h3>Secret phrase has been selected</h3>} */}
+        {/* {this.props.guessedCorrectly && <h3>You won!</h3>}
+        {this.props.gameOver && !this.props.guessedCorrectly && <h3>No more guesses!</h3>} */}
         <div className="counter-holder">
           <p>Guesses remaining: {this.props.guessNumber} </p>
         </div>
@@ -62,14 +51,13 @@ class ClassComponent extends Component {
               id="filled-basic"
               label="Guess the phrase"
               variant="outlined"
-              value={this.state.guessInput}
               onChange={this.guessInputChangeHandler}
             />
             <Button
               variant="contained"
               color="primary"
               onClick={this.guessSubmitHandler}
-              disabled={this.props.gameOver || this.state.gettingSecretPhrase}
+              disabled={this.props.gameOver}
             >
               Submit Guess
             </Button>
@@ -77,13 +65,13 @@ class ClassComponent extends Component {
         </div>
         <div className="inputHolder">
           <p>Guesses so far...</p>
-          {this.state.previousGuesses.length > 0 && 
+          {/* {this.state.previousGuesses.length > 0 && 
             <ul>
               {this.state.previousGuesses.map((guess) => 
               <li key={Math.random()}>{guess}</li>)
               }
             </ul>
-          }
+          } */}
         </div>
       </div>
     );
