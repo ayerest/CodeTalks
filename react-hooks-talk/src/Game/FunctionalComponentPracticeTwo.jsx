@@ -17,17 +17,16 @@ const FunctionalComponent = () => {
     const secretPhrase = useSelector((state) => state.secretWord);
 
     useEffect(() => {
-        console.log("use effect");
-        setCheckingGuess(true);
-        const timer = setTimeout(() => {
-            // setSecretPhrase(phrases[Math.floor(Math.random() * phrases.length)])
-            dispatch({type: 'SELECTPHRASE'})
-            setCheckingGuess(false);
-        }, 2000)
-        return () => {
-            console.log("use effect clean up function")
-            clearTimeout(timer);
-        }
+      console.log("use effect");
+      setCheckingGuess(true);
+      const timer = setTimeout(() => {
+        dispatch({type: 'SELECTPHRASE'})
+        setCheckingGuess(false);
+      }, 2000)
+      return () => {
+          console.log("use effect clean up function")
+          clearTimeout(timer);
+      }
     }, [dispatch])
 
     useEffect(() => {
@@ -40,26 +39,11 @@ const FunctionalComponent = () => {
         setGuessInput(e.target.value);
     }
 
-    const guessSubmitHandler = () => {
-        // dispatch 'CHECKGUESS' action to the redux store
-        // setCheckingGuess(true);
-        // timer = setTimeout(() => {
-            dispatch({type: 'CHECKGUESS', payload: guessInput});
-            setPreviousGuesses((prevState) => [...prevState, guessInput]);
-            setGuessInput('');
-            // setCheckingGuess(false);
-        // }, 1000)
+    const guessSubmitHandler = () => {  
+      dispatch({type: 'CHECKGUESS', payload: guessInput});
+      setPreviousGuesses((prevState) => [...prevState, guessInput]);
+      setGuessInput('');
     }
-
-    // const resetGameHandler = () => {
-    //     // dispatch 'RESET' action to the redux store
-    //     // setCheckingGuess(false);
-    //     // clearTimeout(timer)
-    //     dispatch({type: 'RESET'});
-    //     setCheckingGuess(true);
-    //     setGuessInput('');
-    //     setPreviousGuesses([]);
-    // }
 
     return (
       <div className="component">
@@ -68,13 +52,6 @@ const FunctionalComponent = () => {
         {!checkingGuess && <h3>Secret phrase has been selected</h3>}
         {gameOver && guessedCorrectly && <h3>You won!</h3>}
         {gameOver && !guessedCorrectly && <h3>No more guesses! See you later boy!</h3>}
-        {/* <Button
-          variant="contained"
-          color="secondary"
-          onClick={resetGameHandler}
-        >
-          Reset Game
-        </Button> */}
         <div className="counter-holder">
           <p>Guesses remaining: {guessNumber} </p>
         </div>

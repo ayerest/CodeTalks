@@ -1,72 +1,59 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { connect } from "react-redux";
-
 class ClassComponent extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props)
     this.state = {
-      guessInput: "",
+      guessInput: '',
       previousGuesses: [],
-      checkingGuess: false,
-    };
+      gettingSecretPhrase: true,
+    }
   }
 
-  componentDidMount = () => {
-    console.log("component is mounted")
-    // reset the game when the component is mounted 
-    this.handleResetGame();
+  componentDidMount() {
+    console.log("Component did mount")
+    // dispatch action to select secret phrase
+    this.delay = setTimeout(() => {
+      this.props.selectPhrase();
+      this.setState({gettingSecretPhrase: false})
+    }, 2000);
   }
 
-  componentDidUpdate = () => {
-    console.log("updating");
+  componentDidUpdate() {
+    console.log("Component did update")
   }
 
-  componentWillUnmount = () => {
-    console.log("component unmounted")
-    // clear the timeout here
-    clearTimeout(this.timer);
+  componentWillUnmount() {
+    console.log("Component will unmount")
+    clearTimeout(this.delay);
   }
 
-  handleGuessInputChange = (e) => {
+  guessInputChangeHandler = (e) => {
     this.setState({guessInput: e.target.value});
-  }
-
-  handleGuessSubmission = () => {
-    this.setState({checkingGuess: true});
-    this.timer = setTimeout(() => {
-      this.props.checkGuess(this.state.guessInput)
-      this.setState((state) => ({
-        guessInput: "",
-        previousGuesses: [...state.previousGuesses, state.guessInput],
-        checkingGuess: false,
-      }));
-    }, 1000)
   };
 
-  handleResetGame = () => {
-    this.setState({previousGuesses: [], checkingGuess: false, guessInput: ''});
-    return this.props.resetGame();
-  }
+  guessSubmitHandler = () => {
+    // dispatch 'CHECKGUESS' action to the redux store
+    this.props.checkGuess(this.state.guessInput);
+    this.setState((state, props) => ({
+      previousGuesses: [...state.previousGuesses, state.guessInput],
+      guessInput: '',
+    }));
+  };
 
   render() {
+
     return (
-      <div className="component class">
+      <div className="component">
         <h2>Class Component</h2>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={this.handleResetGame}
-        >
-          Reset Game
-        </Button>
-        {this.state.checkingGuess && <CircularProgress />}
-        {this.props.guessedCorrectly && <h3>"You Guessed Correctly! I like you the way you are"</h3>}
-        {this.props.gameOver && !this.props.guessedCorrectly && <h3>"Game Over. I said, 'see you later, boy'"</h3>}
+        {this.state.gettingSecretPhrase && <h3>Selecting the secret phrase...</h3>}
+        {!this.state.gettingSecretPhrase &&<h3>Secret phrase has been selected</h3>}
+        {this.props.guessedCorrectly && <h3>You won!</h3>}
+        {this.props.gameOver && !this.props.guessedCorrectly && <h3>No more guesses!</h3>}
         <div className="counter-holder">
-          <p>Guesses remaining: {this.props.guessNumber}</p>
+          <p>Guesses remaining: {this.props.guessNumber} </p>
         </div>
         <div className="inputInfo">
           <div className="inputHolder">
@@ -74,45 +61,50 @@ class ClassComponent extends Component {
               id="filled-basic"
               label="Guess the phrase"
               variant="outlined"
+              onChange={this.guessInputChangeHandler}
               value={this.state.guessInput}
-              onChange={this.handleGuessInputChange}
             />
             <Button
               variant="contained"
               color="primary"
-              onClick={this.handleGuessSubmission}
-              disabled={this.props.gameOver || this.state.checkingGuess}
+              onClick={this.guessSubmitHandler}
+              disabled={this.props.gameOver || this.state.gettingSecretPhrase}
             >
-              submit guess
+              Submit Guess
             </Button>
           </div>
         </div>
         <div className="inputHolder">
           <p>Guesses so far...</p>
-          {this.state.previousGuesses.length > 0 && <ul>
-            {this.state.previousGuesses &&
-              this.state.previousGuesses.map((guess) => (
-                <li key={Math.random()}>{guess}</li>
-              ))}
-          </ul>}
+          {this.state.previousGuesses.length > 0 && 
+            <ul>
+              {this.state.previousGuesses.map((guess) => 
+              <li key={Math.random()}>{guess}</li>)
+              }
+            </ul>
+          }
         </div>
       </div>
     );
   }
-}
+};
+
 const mapStateToProps = (state) => {
   return {
     guessNumber: state.guessNumber,
     guessedCorrectly: state.guessedCorrectly,
     gameOver: state.gameOver,
+    secretPhrase: state.secretWord,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     resetGame: () => dispatch({ type: "RESET" }),
-    checkGuess: (guess) => dispatch({ type: 'CHECKGUESS', payload: guess }),
+    checkGuess: (guess) => dispatch({ type: "CHECKGUESS", payload: guess }),
+    selectPhrase: () => dispatch({type: "SELECTPHRASE"}),
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ClassComponent);
+
