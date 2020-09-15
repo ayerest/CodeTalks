@@ -1,51 +1,117 @@
-import React, { Component } from 'react';
-
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 class ClassComponent extends Component {
   constructor(props) {
-    super(props)
-    // Step 1: Add state in the constructor
+    super(props);
     this.state = {
-      name: ''
-    }
+      guessInput: "",
+      previousGuesses: [],
+      gettingSecretPhrase: true,
+    };
   }
-  // Step 2: Add side effect in the lifecycle methods
+
   componentDidMount() {
-    // Step 2a: setTimeout that alters state will cause a memory leak
-    // Step 3a: console.log to demonstrate render number
-    console.log("class component did mount");
-    this.timer = setTimeout(() => {
-      this.setState({ name: 'Time out' })
-    }, 1000)
+    console.log("Component did mount");
+    // dispatch action to select secret phrase
+    this.delay = setTimeout(() => {
+      this.props.selectPhrase();
+      this.setState({ gettingSecretPhrase: false });
+    }, 2000);
   }
+
+  componentDidUpdate() {
+    console.log("Component did update");
+  }
+
   componentWillUnmount() {
-    console.log("class component will unmount")
-    // Step 2b: clean up the setTimeout here to solve the memory leak issue
-    clearTimeout(this.timer);
+    console.log("Component will unmount");
+    clearTimeout(this.delay);
+    // TODO: comment out before moving to functional component
+    // this.props.resetGame();
   }
 
-  // step 3a: only render if the counter is even
-  // TODO: need a better example here - not clear enough, add componentDidUpdate
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.counter % 2 === 0) {
-      return true;
-    }
-    return false;
-  }
+  guessInputChangeHandler = (e) => {
+    this.setState({ guessInput: e.target.value });
+  };
 
-  inputChangeHandler = (e) => {
-    this.setState({name: e.target.value})
-  }
+  guessSubmitHandler = () => {
+    // dispatch 'CHECKGUESS' action to the redux store
+    this.props.checkGuess(this.state.guessInput);
+    // TODO: doublecheck why accessing prevState is better
+    this.setState((state, props) => ({
+      previousGuesses: [...state.previousGuesses, state.guessInput],
+      guessInput: "",
+    }));
+  };
 
-  // TODO: update to reflect most recent changes
   render() {
     return (
       <div className="component">
         <h2>Class Component</h2>
-        <p>Counter: {this.props.counter}</p>
-        <input type="text" value={this.state.name} onChange={this.inputChangeHandler} />
+        {this.state.gettingSecretPhrase && (
+          <h3>Selecting the secret phrase...</h3>
+        )}
+        {!this.state.gettingSecretPhrase && (
+          <h3>Secret phrase has been selected</h3>
+        )}
+        {this.props.guessedCorrectly && <h3>You won!</h3>}
+        {this.props.gameOver && !this.props.guessedCorrectly && (
+          <h3>No more guesses!</h3>
+        )}
+        <div className="counter-holder">
+          <p>Guesses remaining: {this.props.guessNumber} </p>
+        </div>
+        <div className="inputInfo">
+          <div className="inputHolder">
+            <TextField
+              id="filled-basic"
+              label="Guess the phrase"
+              variant="outlined"
+              onChange={this.guessInputChangeHandler}
+              value={this.state.guessInput}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.guessSubmitHandler}
+              disabled={this.props.gameOver || this.state.gettingSecretPhrase}
+            >
+              Submit Guess
+            </Button>
+          </div>
+        </div>
+        <div className="inputHolder">
+          <p>Guesses so far...</p>
+          {this.state.previousGuesses.length > 0 && (
+            <ul>
+              {this.state.previousGuesses.map((guess) => (
+                <li key={Math.random()}>{guess}</li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
-    )
+    );
   }
 }
 
-export default ClassComponent;
+const mapStateToProps = (state) => {
+  return {
+    guessNumber: state.guessNumber,
+    guessedCorrectly: state.guessedCorrectly,
+    gameOver: state.gameOver,
+    secretPhrase: state.secretWord,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    resetGame: () => dispatch({ type: "RESET" }),
+    checkGuess: (guess) => dispatch({ type: "CHECKGUESS", payload: guess }),
+    selectPhrase: () => dispatch({ type: "SELECTPHRASE" }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ClassComponent);

@@ -1,48 +1,113 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
-// TODO: add custom hook / refactor one of the useEffect functions into a custom hook
+const useCustomHook = () => {
+  const [selectingPhrase, setSelectingPhrase] = useState(true);
+  const dispatch = useDispatch();
 
-const FunctionalComponent = (props) => {
-  // Step 1: Add state using useState hook
-  const [name, setName] = useState('');
-  const inputChangeHandler = (e) => {
-    setName(e.target.value)
-  }
-  // Step 2: Add useEffect to demonstrate how often useEffect runs
   useEffect(() => {
     console.log("use effect");
-  })
-
-  // Step 3a: Add useEffect to handle side effect
-  useEffect(() => {
-    console.log("set timeout useEffect")
-    // Step 3b: setTimeout that alters state to create a memory leak
-    const timer = setTimeout(() => {
-      setName('Timing out');
-    }, 1000)
-    // Step 3c: clear timeout in useeffect cleanup function
+    const delay = setTimeout(() => {
+      //  dispatch action to select new secret phrase
+      dispatch({ type: "SELECTPHRASE" });
+      setSelectingPhrase(false);
+    }, 2000);
     return () => {
-      clearTimeout(timer);
-    }
-    // Step 3d: add empty dependency array so that this effect only runs for the first render
-  }, [])
+      clearTimeout(delay);
+    };
+  });
+  return selectingPhrase;
+};
 
-  // Step 4: add useEffect with dependency array
+const FunctionalComponent = (props) => {
+  const [guessInput, setGuessInput] = useState("");
+  const [previousGuesses, setPreviousGuesses] = useState([]);
+  const selectingPhrase = useCustomHook();
+
+  const guessNumber = useSelector((state) => state.guessNumber);
+  const gameOver = useSelector((state) => state.gameOver);
+  const guessedCorrectly = useSelector((state) => state.guessedCorrectly);
+
+  const dispatch = useDispatch();
+
+  // TODO: need to set up this useEffect early on
+
+  // useEffect(() => {
+  //  console.log("use effect");
+  //  const delay = setTimeout(() => {
+  //     //  dispatch action to select new secret phrase
+  //     dispatch({type: 'SELECTPHRASE'});
+  //     setSelectingPhrase(false);
+  //  }, 2000)
+  //  return () => {
+  //    clearTimeout(delay);
+  //  }
+  // })
+
   useEffect(() => {
-    // Step 4a: demonstrate only runs when the second counter changes
-    console.log("last useEffect");
-    setName(props.secondCounter);
-  }, [props.secondCounter])
+    console.log("second use effect");
+    // dispatch to reset game when component is mounted
+    dispatch({ type: "RESET" });
+    // TODO: why is dispatch needed as a dependency
+  }, [dispatch]);
 
-  // TODO: update to reflect most recent changes
+  const guessInputChangeHandler = (e) => {
+    setGuessInput(e.target.value);
+  };
+
+  const guessSubmitHandler = () => {
+    // dispatch 'CHECKGUESS' action to the redux store
+    dispatch({ type: "CHECKGUESS", payload: guessInput });
+    // TODO: do I need to access prevState like this?
+    setPreviousGuesses((prevState) => [...prevState, guessInput]);
+    setGuessInput("");
+  };
+
   return (
     <div className="component">
       <h2>Functional Component</h2>
-      <p>Counter: {props.counter}</p>
-      <p>SecondCounter: {props.secondCounter}</p>
-      <input type="text" value={name} onChange={inputChangeHandler} />
+      {selectingPhrase && <h3>Selecting the secret phrase...</h3>}
+      {!selectingPhrase && <h3>Secret phrase has been selected</h3>}
+      {gameOver && guessedCorrectly && <h3>You won!</h3>}
+      {gameOver && !guessedCorrectly && (
+        <h3>No more guesses! See you later boy!</h3>
+      )}
+      <div className="counter-holder">
+        <p>Guesses remaining: {guessNumber} </p>
+      </div>
+      <div className="inputInfo">
+        <div className="inputHolder">
+          <TextField
+            id="filled-basic"
+            label="Guess the phrase"
+            variant="outlined"
+            value={guessInput}
+            onChange={guessInputChangeHandler}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={guessSubmitHandler}
+            disabled={gameOver || selectingPhrase}
+          >
+            Submit Guess
+          </Button>
+        </div>
+      </div>
+      <div className="inputHolder">
+        <p>Guesses so far...</p>
+        {previousGuesses.length > 0 && (
+          <ul>
+            {previousGuesses.map((guess) => (
+              <li key={Math.random()}>{guess}</li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
 export default FunctionalComponent;

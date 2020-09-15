@@ -27,7 +27,6 @@ const reducer = (state = initialState, action) => {
         ...initialState,
       }
     case 'CHECKGUESS':
-      console.log(action.payload);
       if (action.payload === state.secretWord) {
         return {
           ...state,

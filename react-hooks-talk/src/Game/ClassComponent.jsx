@@ -6,19 +6,21 @@ class ClassComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      guessInput: '',
+      guessInput: "",
       previousGuesses: [],
       gettingSecretPhrase: true,
-    }
+    };
   }
 
   componentDidMount() {
     console.log("Component did mount")
     // dispatch action to select secret phrase
+    this.props.resetGame();
     this.delay = setTimeout(() => {
       this.props.selectPhrase();
-      this.setState({gettingSecretPhrase: false})
-    }, 2000);
+      this.setState({ gettingSecretPhrase: false });
+    }, 2000)
+
   }
 
   componentDidUpdate() {
@@ -27,6 +29,8 @@ class ClassComponent extends Component {
 
   componentWillUnmount() {
     console.log("Component will unmount")
+    // dispatch action to reset game
+    this.props.resetGame();
     clearTimeout(this.delay);
   }
 
@@ -37,10 +41,7 @@ class ClassComponent extends Component {
   guessSubmitHandler = () => {
     // dispatch 'CHECKGUESS' action to the redux store
     this.props.checkGuess(this.state.guessInput);
-    this.setState((state, props) => ({
-      previousGuesses: [...state.previousGuesses, state.guessInput],
-      guessInput: '',
-    }));
+    this.setState((prevState, props) => ({previousGuesses: [...prevState.previousGuesses, prevState.guessInput], guessInput: ''}));
   };
 
   render() {
@@ -61,8 +62,8 @@ class ClassComponent extends Component {
               id="filled-basic"
               label="Guess the phrase"
               variant="outlined"
-              onChange={this.guessInputChangeHandler}
               value={this.state.guessInput}
+              onChange={this.guessInputChangeHandler}
             />
             <Button
               variant="contained"

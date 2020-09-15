@@ -1,100 +1,91 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
-const FunctionalComponent = () => {
-    const [guessInput, setGuessInput] = useState('');
-    const [previousGuesses, setPreviousGuesses] = useState([]);
-    const [checkingGuess, setCheckingGuess] = useState(false);
-    let timer = null;
+const useCustomHook = () => {
+  const [selectingPhrase, setSelectingPhrase] = useState(true);
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
-    const guessNumber = useSelector(state => state.guessNumber);
-    const gameOver = useSelector(state => state.gameOver);
-    const guessedCorrectly = useSelector(state => state.guessedCorrectly);
-
-    useEffect(() => {
-        return () => {
-            console.log("use effect clean up function");
-            clearTimeout(timer);
-        }
-        // including setGuessInput keeps this from running every time the input is altered
-        // memory leak here...need to figure out why
-    }, [])
-
-    useEffect(() => {
-        // run this every time the component is mounted, but not for render updates
-        dispatch({type: 'RESET'})
-    }, [dispatch])
-
-
-    const handleResetGame = () => {
-        setGuessInput('');
-        setPreviousGuesses([]);
-        return dispatch({type: 'RESET'})
-    }
-
-    const handleGuessInputChange = (e) => {
-        setGuessInput(e.target.value);
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      dispatch({ type: "SELECTPHRASE" });
+      setSelectingPhrase(false);
+    }, 2000);
+    return () => {
+      clearTimeout(delay);
     };
+  });
+  return selectingPhrase;
+}
 
-    const handleGuessSubmission = () => {
-        setCheckingGuess(true);
-        timer = setTimeout(() => {
-            dispatch({type: 'CHECKGUESS', payload: guessInput});
-            setPreviousGuesses(() => [...previousGuesses, guessInput]);
-            setGuessInput('');
-            setCheckingGuess(false);
-        }, 1000)
-    }
+const FunctionalComponent = (props) => {
 
-    return (
-      <div className="component">
-        <h2>Functional Component</h2>
-        {checkingGuess && <CircularProgress />}
-        {guessedCorrectly && <h3>You won!</h3>}
-        {!guessedCorrectly && gameOver && <h3>Game Over!</h3>}
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleResetGame}
-        >
-          Reset Game
-        </Button>
-        <div className="counter-holder">
-          <p>Guesses remaining: {guessNumber}</p>
-        </div>
-        <div className="inputInfo">
-          <div className="inputHolder">
-            <TextField
-              id="filled-basic"
-              label="Guess the phrase"
-              variant="outlined"
-              value={guessInput}
-              onChange={handleGuessInputChange}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleGuessSubmission}
-              disabled={gameOver || checkingGuess}
-            >
-              Submit Guess
-            </Button>
-          </div>
-        </div>
+  const [guessInput, setGuessInput] = useState('');
+  const [previousGuesses, setPreviousGuesses] = useState([]);
+
+  const selectingPhrase = useCustomHook();
+
+  const guessNumber = useSelector((state) => state.guessNumber);
+  const gameOver = useSelector((state) => state.gameOver);
+  const guessedCorrectly = useSelector((state) => state.guessedCorrectly);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({type: 'RESET'});
+  }, [dispatch])
+
+  const guessInputChangeHandler = (e) => {
+    setGuessInput(e.target.value);
+  };
+
+  const guessSubmitHandler = () => {
+    // dispatch 'CHECKGUESS' action to the redux store
+    dispatch({type: 'CHECKGUESS', payload: guessInput})
+    setPreviousGuesses([...previousGuesses, guessInput])
+    setGuessInput('');
+  };
+
+  return (
+    <div className="component">
+      <h2>Functional Component</h2>
+      {selectingPhrase && <h3>Selecting the secret phrase...</h3>}
+      {!selectingPhrase && <h3>Secret phrase has been selected</h3>}
+      {gameOver && guessedCorrectly && <h3>You won!</h3>}
+      {gameOver && !guessedCorrectly && <h3>No more guesses! See you later boy!</h3>}
+      <div className="counter-holder">
+        <p>Guesses remaining: {guessNumber} </p>
+      </div>
+      <div className="inputInfo">
         <div className="inputHolder">
-            <p>Guesses so far...</p>
-            {previousGuesses.length > 0 &&
-                <ul>
-                    {previousGuesses && previousGuesses.map((guess) => <li key={Math.random()}>{guess}</li>)}
-                </ul>
-            }
+          <TextField
+            id="filled-basic"
+            label="Guess the phrase"
+            variant="outlined"
+            value={guessInput}
+            onChange={guessInputChangeHandler}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={guessSubmitHandler}
+            disabled={selectingPhrase || gameOver}
+          >
+            Submit Guess
+          </Button>
         </div>
       </div>
-    );
-  }
+      <div className="inputHolder">
+        <p>Guesses so far...</p>
+        {previousGuesses.length > 0 && 
+          <ul>
+              {previousGuesses.map((guess) => <li key={Math.random()}>{guess}</li>)}
+          </ul>
+        }
+      </div>
+    </div>
+  );
+};
 
 export default FunctionalComponent;
