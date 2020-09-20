@@ -1,4 +1,4 @@
-import phrases from '../words/words';
+import phrases from "../words/words";
 
 const maxGuesses = 5;
 
@@ -7,12 +7,12 @@ const initialState = {
   secretWords: [...phrases],
   guessedCorrectly: false,
   gameOver: false,
-  secretWord: '',
+  secretWord: "",
 };
 
-const reducer = (state = initialState, action) => {
+const classReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SELECTPHRASEFUNCTIONAL":
+    case "SELECTPHRASECLASS":
       return {
         ...state,
         secretWord:
@@ -20,11 +20,11 @@ const reducer = (state = initialState, action) => {
             Math.floor(Math.random() * state.secretWords.length)
           ],
       };
-    case "RESETFUNCTIONAL":
+    case "RESETCLASS":
       return {
         ...initialState,
       };
-    case "CHECKGUESSFUNCTIONAL":
+    case "CHECKGUESSCLASS":
       if (action.payload === state.secretWord) {
         return {
           ...state,
@@ -51,4 +51,4 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-export default reducer;
+export default classReducer;

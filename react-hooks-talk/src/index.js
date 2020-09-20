@@ -3,11 +3,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './Game/App';
 import * as serviceWorker from './serviceWorker';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from "redux";
 import { Provider } from 'react-redux';
 import reducer from './Store/gameReducer';
+import classReducer from './Store/classGameReducer';
 
-const store = createStore(reducer);
+const rootReducer = combineReducers({
+  class: classReducer,
+  functional: reducer,
+});
+
+const store = createStore(rootReducer);
 
 ReactDOM.render(
   <React.StrictMode>

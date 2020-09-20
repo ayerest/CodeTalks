@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import * as actions from '../Store/Actions/FunctionalActions';
 
 const useCustomHook = () => {
   const [selectingPhrase, setSelectingPhrase] = useState(true);
@@ -11,7 +12,7 @@ const useCustomHook = () => {
     console.log("use effect");
     const delay = setTimeout(() => {
       //  dispatch action to select new secret phrase
-      dispatch({ type: "SELECTPHRASE" });
+      dispatch(actions.selectPhrase());
       setSelectingPhrase(false);
     }, 2000);
     return () => {
@@ -26,9 +27,9 @@ const FunctionalComponent = (props) => {
   const [previousGuesses, setPreviousGuesses] = useState([]);
   const selectingPhrase = useCustomHook();
 
-  const guessNumber = useSelector((state) => state.guessNumber);
-  const gameOver = useSelector((state) => state.gameOver);
-  const guessedCorrectly = useSelector((state) => state.guessedCorrectly);
+  const guessNumber = useSelector((state) => state.functional.guessNumber);
+  const gameOver = useSelector((state) => state.functional.gameOver);
+  const guessedCorrectly = useSelector((state) => state.functional.guessedCorrectly);
 
   const dispatch = useDispatch();
 
@@ -49,7 +50,7 @@ const FunctionalComponent = (props) => {
   useEffect(() => {
     console.log("second use effect");
     // dispatch to reset game when component is mounted
-    dispatch({ type: "RESET" });
+    dispatch(actions.reset());
     // TODO: why is dispatch needed as a dependency
   }, [dispatch]);
 
@@ -59,7 +60,7 @@ const FunctionalComponent = (props) => {
 
   const guessSubmitHandler = () => {
     // dispatch 'CHECKGUESS' action to the redux store
-    dispatch({ type: "CHECKGUESS", payload: guessInput });
+    dispatch(actions.checkGuess(guessInput));
     // TODO: do I need to access prevState like this?
     setPreviousGuesses((prevState) => [...prevState, guessInput]);
     setGuessInput("");

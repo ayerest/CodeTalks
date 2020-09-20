@@ -99,18 +99,18 @@ class ClassComponent extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    guessNumber: state.guessNumber,
-    guessedCorrectly: state.guessedCorrectly,
-    gameOver: state.gameOver,
-    secretPhrase: state.secretWord,
+    guessNumber: state.class.guessNumber,
+    guessedCorrectly: state.class.guessedCorrectly,
+    gameOver: state.class.gameOver,
+    secretPhrase: state.class.secretWord,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    resetGame: () => dispatch({ type: "RESET" }),
-    checkGuess: (guess) => dispatch({ type: "CHECKGUESS", payload: guess }),
-    selectPhrase: () => dispatch({ type: "SELECTPHRASE" }),
+    resetGame: () => dispatch({ type: "RESETCLASS" }),
+    checkGuess: (guess) => dispatch({ type: "CHECKGUESSCLASS", payload: guess }),
+    selectPhrase: () => dispatch({ type: "SELECTPHRASECLASS" }),
   };
 };
 
