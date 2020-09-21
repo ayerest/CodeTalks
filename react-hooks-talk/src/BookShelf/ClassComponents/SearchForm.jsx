@@ -6,7 +6,7 @@ class SearchForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searching: true,
+      searching: false,
     }
   }
   componentDidMount() {
@@ -25,8 +25,10 @@ class SearchForm extends Component {
   searchInputHandler = (e) => {};
 
   searchSubmitHandler = () => {
+    this.setState({searching: true})
     this.searchDelay = setTimeout(() => {
       this.props.searchForBooks();
+      this.setState({searching: false});
     }, 2000)
   };
 
@@ -43,6 +45,7 @@ class SearchForm extends Component {
           variant="contained"
           color="primary"
           onClick={this.searchSubmitHandler}
+          disabled={this.state.searching}
         >
           Search
         </Button>

@@ -7,6 +7,7 @@ const initialState = {
 const ClassBooksReducer = (state = initialState, action) => {
   switch (action.type) {
     case "CREATELIST":
+      console.log(action.payload);
       return {
         ...state,
       };
