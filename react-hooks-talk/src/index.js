@@ -9,9 +9,11 @@ import { Provider } from 'react-redux';
 // import reducer from './Store/gameReducer';
 // import classReducer from './Store/classGameReducer';
 import ClassBooksReducer from './BookStore/ClassBooksReducer';
+import FunctionalBooksReducer from './BookStore/FunctionalBooksReducer';
 
 const rootReducer = combineReducers({
   class: ClassBooksReducer,
+  functional: FunctionalBooksReducer,
 });
 
 const store = createStore(rootReducer);

@@ -137,6 +137,7 @@ class ClassComponentsContainer extends Component {
               label="Search by Author"
               variant="outlined"
               onChange={this.searchInputHandler}
+              value={this.state.searchInput}
             />
             <Button
               variant="contained"
