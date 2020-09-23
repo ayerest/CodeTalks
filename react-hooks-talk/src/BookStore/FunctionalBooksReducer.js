@@ -1,15 +1,16 @@
-import books from "../BookData/Books";
+import { bookshelves } from "../BookData/Books";
 
 const initialState = {
-  myBooks: [...books],
+  myBooks: bookshelves,
 };
 
 const FunctionalBooksReducer = (state = initialState, action) => {
   switch (action.type) {
     case "CREATESHELF":
       console.log(action.payload);
+      console.log(state.myBooks);
       return {
-        ...state,
+        myBooks: [...state.myBooks, action.payload]
       };
     case "ADDTOLIST":
       return {

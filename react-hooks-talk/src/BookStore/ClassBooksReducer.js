@@ -1,7 +1,7 @@
-import books from "../BookData/Books";
+import { bookshelves } from "../BookData/Books";
 
 const initialState = {
-  myBooks: [...books]
+  myBooks: bookshelves
 };
 
 const ClassBooksReducer = (state = initialState, action) => {
@@ -9,7 +9,7 @@ const ClassBooksReducer = (state = initialState, action) => {
     case "CREATELIST":
       console.log(action.payload);
       return {
-        ...state,
+        myBooks: [...state.myBooks, action.payload],
       };
     case "ADDTOLIST":
       return {

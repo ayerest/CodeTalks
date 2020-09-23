@@ -54,7 +54,6 @@ const FunctionalComponentsContainer = () => {
           console.log(error.message);
         }
     };
-    console.log("getting random book");
     getRandomBook();
     return () => {
       controller.abort();
@@ -69,7 +68,7 @@ const FunctionalComponentsContainer = () => {
     // don't forget to include the dependency
   }, [searchDelay])
 
-  const books = useSelector(state => state.functional.myBooks);
+  const shelves = useSelector(state => state.functional.myBooks);
   const dispatch = useDispatch();
 
   const searchInputHandler = (e) => {
@@ -81,12 +80,11 @@ const FunctionalComponentsContainer = () => {
     setSearching(true);
     searchDelay = setTimeout(() => {
       fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=inauthor:${searchInput}&printType=books&projection=lite&orderBy=relevance&maxResults=5&startIndex=0&fields=items(selfLink,volumeInfo(title,authors,description,imageLinks))`
+      `https://www.googleapis.com/books/v1/volumes?q=inauthor:${searchInput}&printType=books&projection=lite&orderBy=relevance&maxResults=10&startIndex=0&fields=items(selfLink,volumeInfo(title,authors,description,imageLinks))`
       )
       .then((response) => response.json())
       .then((data) => {
         setSearchResults(data.items);
-        console.log(data.items.length);
         setSearching(false);
       });
     }, 2000);
@@ -94,11 +92,12 @@ const FunctionalComponentsContainer = () => {
 
   const addToTempShelf = (book) => {
     setNewBookShelf(prevState => [...prevState, book]);
+    // TODO: add input field to name shelf
   }
   
   const saveShelf = () => {
     // dispatch action to redux store to create new shelf
-    dispatch({type: 'CREATESHELF', payload: newBookShelf})
+    dispatch({type: 'CREATESHELF', payload: {New: newBookShelf}})
   }
 
   const toggleShelves = () => {
@@ -145,36 +144,6 @@ const FunctionalComponentsContainer = () => {
         </Grid>
       </Grid>
       <Grid container spacing={2}>
-        {searchResults.length > 0 && (
-          <Grid container item spacing={1} direction="column">
-            <h2>Search Results</h2>
-            <List>
-              {searchResults.map((book) => (
-                <ListItem key={book.selfLink}>
-                  <ListItemText
-                    primary={book.volumeInfo.title}
-                    secondary={`by ${book.volumeInfo.authors}`}
-                  />
-                  <ListItemAvatar>
-                    <img
-                      src={book.volumeInfo.imageLinks.thumbnail}
-                      alt={book.volumeInfo.title}
-                    />
-                  </ListItemAvatar>
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => addToTempShelf(book)}
-                    >
-                      <AddIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            </List>
-          </Grid>
-        )}
         {newBookShelf.length > 0 && (
           <Grid container item spacing={1} direction="column">
             <h2>New Book Shelf</h2>
@@ -193,13 +162,39 @@ const FunctionalComponentsContainer = () => {
                   </ListItemAvatar>
                 </ListItem>
               ))}
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={saveShelf}
-              >
+              <IconButton edge="end" aria-label="delete" onClick={saveShelf}>
                 <SaveIcon />
               </IconButton>
+            </List>
+          </Grid>
+        )}
+        {searchResults.length > 0 && (
+          <Grid container item spacing={1} direction="column">
+            <h2>Search Results</h2>
+            <List>
+              {searchResults.map((book) => (
+                <ListItem key={book.selfLink}>
+                  <ListItemText
+                    primary={book.volumeInfo.title}
+                    secondary={`by ${book.volumeInfo.authors}`}
+                  />
+                  <ListItemAvatar>
+                    <img
+                      src={book.volumeInfo.imageLinks && book.volumeInfo.imageLinks.thumbnail}
+                      alt={book.volumeInfo.title}
+                    />
+                  </ListItemAvatar>
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      edge="end"
+                      aria-label="add"
+                      onClick={() => addToTempShelf(book)}
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
             </List>
           </Grid>
         )}
@@ -217,25 +212,28 @@ const FunctionalComponentsContainer = () => {
         <Grid container spacing={1} direction="column">
           <div>
             <h2>My BookShelves</h2>
-            <List>
-              {books &&
-                books.map((book) => (
-                  <ListItem key={book.image}>
-                    <ListItemText
-                      primary={book.title}
-                      secondary={`by ${book.authors[0]}`}
-                    />
-                    <ListItemAvatar>
-                      <img src={book.image} alt={book.title} />
-                    </ListItemAvatar>
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end" aria-label="delete">
-                        <DeleteIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))}
-            </List>
+            {shelves &&
+              shelves.map((shelf) => {
+                return (
+                  <List key={Math.random()}>
+                    <h2>{Object.keys(shelf)[0].toString()}</h2>
+                    {shelf[Object.keys(shelf)[0]].map((book) => (
+                      <ListItem key={book.volumeInfo.imageLinks.thumbnail}>
+                        <ListItemText
+                          primary={book.volumeInfo.title}
+                          secondary={`by ${book.volumeInfo.authors}`}
+                        />
+                        <ListItemAvatar>
+                          <img
+                            src={book.volumeInfo.imageLinks.thumbnail}
+                            alt={book.volumeInfo.title}
+                          />
+                        </ListItemAvatar>
+                      </ListItem>
+                    ))}
+                  </List>
+                );
+              })}
           </div>
         </Grid>
       )}
