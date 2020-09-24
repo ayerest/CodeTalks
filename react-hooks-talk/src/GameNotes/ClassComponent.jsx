@@ -28,8 +28,7 @@ class ClassComponent extends Component {
   componentWillUnmount() {
     console.log("Component will unmount");
     clearTimeout(this.delay);
-    // TODO: comment out before moving to functional component
-    // this.props.resetGame();
+    this.props.resetGame();
   }
 
   guessInputChangeHandler = (e) => {

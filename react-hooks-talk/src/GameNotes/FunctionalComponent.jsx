@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import * as actions from '../Store/Actions/FunctionalActions';
+import * as actions from '../GameStore/Actions/FunctionalActions';
 
 const useCustomHook = () => {
   const [selectingPhrase, setSelectingPhrase] = useState(true);

@@ -10,7 +10,7 @@ const initialState = {
   secretWord: "",
 };
 
-const classReducer = (state = initialState, action) => {
+const ClassGameReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SELECTPHRASECLASS":
       return {
@@ -51,4 +51,4 @@ const classReducer = (state = initialState, action) => {
   }
 };
 
-export default classReducer;
+export default ClassGameReducer;

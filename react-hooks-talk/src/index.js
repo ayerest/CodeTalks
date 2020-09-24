@@ -1,19 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-// import App from './Game/App';
-import App from './BookShelf/App';
+import App from './Game/App';
+// import App from './BookShelf/App';
 import * as serviceWorker from './serviceWorker';
 import { createStore, combineReducers } from "redux";
 import { Provider } from 'react-redux';
-// import reducer from './Store/gameReducer';
-// import classReducer from './Store/classGameReducer';
-import ClassBooksReducer from './BookStore/ClassBooksReducer';
-import FunctionalBooksReducer from './BookStore/FunctionalBooksReducer';
+import FunctionalGameReducer from './GameStore/gameReducer';
+import ClassGameReducer from './GameStore/classGameReducer';
+// import ClassBooksReducer from './BookStore/ClassBooksReducer';
+// import FunctionalBooksReducer from './BookStore/FunctionalBooksReducer';
 
 const rootReducer = combineReducers({
-  class: ClassBooksReducer,
-  functional: FunctionalBooksReducer,
+  class: ClassGameReducer,
+  functional: FunctionalGameReducer,
 });
 
 const store = createStore(rootReducer);

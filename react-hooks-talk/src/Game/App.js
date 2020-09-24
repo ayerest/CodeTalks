@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import Switch from "@material-ui/core/Switch";
 import Container from "@material-ui/core/Container";
-import ClassComponent from "../Notes/ClassComponent";
-import FunctionalComponent from "../Notes/FunctionalComponent";
+import ClassComponent from "../GameNotes/ClassComponent";
+// import FunctionalComponent from "../GameNotes/FunctionalComponent";
+import FunctionalComponent from "./FunctionalComponent";
+
 import '../App.css';
 
 class App extends Component {
