@@ -23,15 +23,6 @@ class ClassComponentsContainer extends Component {
       searching: false,
       searchInput: "",
       newBookShelf: [],
-      authors: [
-        "John Steinbeck",
-        "Jane Austen",
-        "Raymond Chandler",
-        "N.K. Jemisin",
-        "Maya Angelou",
-        "Charlotte Bronte",
-        "Mary Shelley",
-      ],
       randomBook: null,
       showMyBookShelves: false,
     };
@@ -63,8 +54,8 @@ class ClassComponentsContainer extends Component {
     try {
       const response = await fetch(
         `https://www.googleapis.com/books/v1/volumes?q=inauthor:${
-          this.state.authors[
-            Math.floor(Math.random() * this.state.authors.length)
+          this.props.authors[
+            Math.floor(Math.random() * this.props.authors.length)
           ]
         }&printType=books&projection=lite&orderBy=relevance&maxResults=1&startIndex=0&fields=items(selfLink,volumeInfo(title,authors,description,imageLinks))`,
         {
@@ -101,6 +92,7 @@ class ClassComponentsContainer extends Component {
   saveShelf = () => {
     const list = this.state.newBookShelf;
     this.props.createList(list);
+    this.setState({searchResults: []});
   };
 
   toggleShelves = () => {
@@ -150,11 +142,11 @@ class ClassComponentsContainer extends Component {
           </Grid>
         </Grid>
         <Grid container spacing={2}>
-          {this.state.searchResults.length > 0 &&
+          {this.state.newBookShelf.length > 0 && (
             <Grid container item spacing={1} direction="column">
-              <h2>Search Results</h2>
+              <h2>New Book Shelf</h2>
               <List>
-                {this.state.searchResults.map((book) => (
+                {this.state.newBookShelf.map((book) => (
                   <ListItem key={book.selfLink}>
                     <ListItemText
                       primary={book.volumeInfo.title}
@@ -166,10 +158,41 @@ class ClassComponentsContainer extends Component {
                         alt={book.volumeInfo.title}
                       />
                     </ListItemAvatar>
+                  </ListItem>
+                ))}
+                <IconButton
+                  edge="end"
+                  aria-label="add"
+                  onClick={this.saveShelf}
+                >
+                  <SaveIcon />
+                </IconButton>
+              </List>
+            </Grid>
+          )}
+          {this.state.searchResults.length > 0 && (
+            <Grid container item spacing={1} direction="column">
+              <h2>Search Results</h2>
+              <List>
+                {this.state.searchResults.map((book) => (
+                  <ListItem key={book.selfLink}>
+                    <ListItemText
+                      primary={book.volumeInfo.title}
+                      secondary={`by ${book.volumeInfo.authors}`}
+                    />
+                    <ListItemAvatar>
+                      <img
+                        src={
+                          book.volumeInfo.imageLinks &&
+                          book.volumeInfo.imageLinks.thumbnail
+                        }
+                        alt={book.volumeInfo.title}
+                      />
+                    </ListItemAvatar>
                     <ListItemSecondaryAction>
                       <IconButton
                         edge="end"
-                        aria-label="delete"
+                        aria-label="add"
                         onClick={() => this.addToTempShelf(book)}
                       >
                         <AddIcon />
@@ -179,35 +202,7 @@ class ClassComponentsContainer extends Component {
                 ))}
               </List>
             </Grid>
-          }
-          {this.state.newBookShelf.length > 0 && (
-          <Grid container item spacing={1} direction="column">
-            <h2>New Book Shelf</h2>
-              <List>
-                {this.state.newBookShelf.map((book) => 
-                  (<ListItem key={book.selfLink}>
-                      <ListItemText
-                        primary={book.volumeInfo.title}
-                        secondary={`by ${book.volumeInfo.authors}`}
-                      />
-                      <ListItemAvatar>
-                        <img
-                          src={book.volumeInfo.imageLinks.thumbnail}
-                          alt={book.volumeInfo.title}
-                        />
-                      </ListItemAvatar>
-                    </ListItem>)
-                )}
-                <IconButton
-                  edge="end"
-                  aria-label="delete"
-                  onClick={this.saveShelf}
-                >
-                  <SaveIcon />
-                </IconButton>
-              </List>
-            </Grid>
-            )}
+          )}
         </Grid>
         <Grid container spacing={2} alignItems="center">
           <h2>Show My Bookshelves</h2>
@@ -222,25 +217,28 @@ class ClassComponentsContainer extends Component {
           <Grid container spacing={1} direction="column">
             <div>
               <h2>My BookShelves</h2>
-              <List>
-                {this.props.books &&
-                  this.props.books.map((book) => (
-                    <ListItem key={book.image}>
-                      <ListItemText
-                        primary={book.title}
-                        secondary={`by ${book.authors[0]}`}
-                      />
-                      <ListItemAvatar>
-                        <img src={book.image} alt={book.title} />
-                      </ListItemAvatar>
-                      <ListItemSecondaryAction>
-                        <IconButton edge="end" aria-label="delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  ))}
-              </List>
+              {this.props.shelves &&
+                this.props.shelves.map((shelf) => {
+                  return (
+                    <List key={Math.random()}>
+                      <h2>{Object.keys(shelf)[0].toString()}</h2>
+                      {shelf[Object.keys(shelf)[0]].map((book) => (
+                        <ListItem key={book.volumeInfo.imageLinks.thumbnail}>
+                          <ListItemText
+                            primary={book.volumeInfo.title}
+                            secondary={`by ${book.volumeInfo.authors}`}
+                          />
+                          <ListItemAvatar>
+                            <img
+                              src={book.volumeInfo.imageLinks.thumbnail}
+                              alt={book.volumeInfo.title}
+                            />
+                          </ListItemAvatar>
+                        </ListItem>
+                      ))}
+                    </List>
+                  );
+                })}
             </div>
           </Grid>
         )}
@@ -251,13 +249,14 @@ class ClassComponentsContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    books: state.class.myBooks,
+    shelves: state.class.myBooks.reverse(),
+    authors: state.class.authors,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    createList: (list) => dispatch({type: 'CREATELIST', payload: list})
+    createList: (list) => dispatch({type: 'CREATELIST', payload: {New: list}})
   };
 };
 

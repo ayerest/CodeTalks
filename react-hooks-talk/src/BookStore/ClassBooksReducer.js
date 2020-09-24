@@ -1,7 +1,16 @@
 import { bookshelves } from "../BookData/Books";
 
 const initialState = {
-  myBooks: bookshelves
+  myBooks: bookshelves,
+  authors: [
+    "John Steinbeck",
+    "Jane Austen",
+    "Raymond Chandler",
+    "N.K. Jemisin",
+    "Maya Angelou",
+    "Charlotte Bronte",
+    "Mary Shelley",
+  ],
 };
 
 const ClassBooksReducer = (state = initialState, action) => {

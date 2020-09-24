@@ -9,7 +9,6 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import SaveIcon from "@material-ui/icons/Save";
 import Switch from "@material-ui/core/Switch";
@@ -21,19 +20,8 @@ const FunctionalComponentsContainer = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [newBookShelf, setNewBookShelf] = useState([]);
   const [showMyBookShelves, setShowMyBookShelves] = useState(false);
-  // TODO: move to redux store
-  const [authors, setAuthors] = useState(
-    [
-      "John Steinbeck",
-      "Jane Austen",
-      "Raymond Chandler",
-      "N.K. Jemisin",
-      "Maya Angelou",
-      "Charlotte Bronte",
-      "Mary Shelley"
-    ]
-  );
   const [randomBook, setRandomBook] = useState(null);
+  const authors = useSelector(state => state.functional.authors);
   
   useEffect(() => {
     // call when component mounts
@@ -68,7 +56,7 @@ const FunctionalComponentsContainer = () => {
     // don't forget to include the dependency
   }, [searchDelay])
 
-  const shelves = useSelector(state => state.functional.myBooks);
+  const shelves = useSelector(state => state.functional.myBooks.reverse());
   const dispatch = useDispatch();
 
   const searchInputHandler = (e) => {
@@ -98,6 +86,7 @@ const FunctionalComponentsContainer = () => {
   const saveShelf = () => {
     // dispatch action to redux store to create new shelf
     dispatch({type: 'CREATESHELF', payload: {New: newBookShelf}})
+    setSearchResults([]);
   }
 
   const toggleShelves = () => {
