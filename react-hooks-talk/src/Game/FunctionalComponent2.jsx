@@ -3,53 +3,53 @@ import { useSelector, useDispatch } from 'react-redux';
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-const useCustomHookName = () => {
-  const dispatch = useDispatch();
+const useCustomHook = () => {
   const [gettingSecretPhrase, setGettingSecretPhrase] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("use effect");
-    // dispatch action to select secret phrase
-    const timer = setTimeout(() => {
+    const delay = setTimeout(() => {
       dispatch({ type: "SELECTPHRASEFUNCTIONAL" });
       setGettingSecretPhrase(false);
     }, 2000);
     return () => {
-      clearTimeout(timer);
+      clearTimeout(delay);
     };
-  }, [dispatch, setGettingSecretPhrase]);
+  }, []);
   return gettingSecretPhrase;
-};
+}
 
-const FunctionalComponent = (props) => {
-
-  const [guessInput, setGuessInput] = useState('Guess');
+const FunctionalComponent = () => {
+  const gettingSecretPhrase = useCustomHook();
+  const [guessInput, setGuessInput] = useState("guess");
   const [previousGuesses, setPreviousGuesses] = useState([]);
-  const gettingSecretPhrase = useCustomHookName();
+
+  // these values need to be retrieved redux store
   const guessedCorrectly = useSelector(state => state.functional.guessedCorrectly);
-  const gameOver = useSelector(state => state.functional.gameOver);
-  const guessNumber = useSelector(state => state.functional.guessNumber);
+  const gameOver = useSelector((state) => state.functional.gameOver);
+  const guessNumber = useSelector((state) => state.functional.guessNumber);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     document.title = guessInput;
-  })
+  });
 
   useEffect(() => {
-   dispatch({ type: "RESETFUNCTIONAL" }); 
-  }, [dispatch])
+    // dispatch to redux store
+    dispatch({type: 'RESETFUNCTIONAL'})
+  }, [dispatch]);
 
   const guessInputChangeHandler = (e) => {
     setGuessInput(e.target.value);
-  }
+  };
 
   const guessSubmitHandler = () => {
-    // dispatch redux store
+    // dispatch 'CHECKGUESS' action to the redux store
     setPreviousGuesses(prevState => [...prevState, guessInput]);
-    setGuessInput('');
-    dispatch({ type: "CHECKGUESSFUNCTIONAL", payload: guessInput });
-  }
-
+    dispatch({type: 'CHECKGUESSFUNCTIONAL', payload: guessInput});
+  };
+  
   return (
     <div className="component">
       <h2>Functional Component</h2>

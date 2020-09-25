@@ -6,7 +6,7 @@ class ClassComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      guessInput: "",
+      guessInput: "Guess",
       previousGuesses: [],
       gettingSecretPhrase: true,
     };
@@ -19,10 +19,12 @@ class ClassComponent extends Component {
       this.props.selectPhrase();
       this.setState({ gettingSecretPhrase: false });
     }, 2000);
+    document.title = this.state.guessInput;
   }
 
   componentDidUpdate() {
     console.log("Component did update");
+    document.title = this.state.guessInput;
   }
 
   componentWillUnmount() {
