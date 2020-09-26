@@ -8,30 +8,17 @@ const initialState = {
   guessedCorrectly: false,
   gameOver: false,
   secretWord: "",
-  authors: [
-    "John Steinbeck",
-    "Jane Austen",
-    "Raymond Chandler",
-    "N.K. Jemisin",
-    "Maya Angelou",
-    "Charlotte Bronte",
-    "Mary Shelley",
-  ],
 };
 
 const ClassGameReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SELECTPHRASECLASS":
+    case "RESETCLASS":
       return {
-        ...state,
+        ...initialState,
         secretWord:
           state.secretWords[
             Math.floor(Math.random() * state.secretWords.length)
           ],
-      };
-    case "RESETCLASS":
-      return {
-        ...initialState,
       };
     case "CHECKGUESSCLASS":
       if (action.payload === state.secretWord) {

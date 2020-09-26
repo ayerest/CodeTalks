@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Grid } from "@material-ui/core";
-import List from "@material-ui/core/List";
-import ListItemText from "@material-ui/core/ListItemText";
 
 class ClassComponent extends Component {
   constructor(props) {
@@ -13,21 +11,17 @@ class ClassComponent extends Component {
       guessInput: "Guess",
       previousGuesses: [],
       gettingSecretPhrase: true,
-      randomBook: null,
     };
   }
 
-  controller = new AbortController();
-
   componentDidMount() {
     console.log("Component did mount");
-    // dispatch action to select secret phrase
+    // dispatch action to resetGame
     this.delay = setTimeout(() => {
-      this.props.selectPhrase();
+      this.props.resetGame();
       this.setState({ gettingSecretPhrase: false });
     }, 2000);
     document.title = this.state.guessInput;
-    this.getRandomBook();
   }
 
   componentDidUpdate() {
@@ -38,28 +32,7 @@ class ClassComponent extends Component {
   componentWillUnmount() {
     console.log("Component will unmount");
     clearTimeout(this.delay);
-    this.props.resetGame();
-    this.controller.abort();
   }
-
-  getRandomBook = async () => {
-    try {
-      const response = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=inauthor:${
-          this.props.authors[
-            Math.floor(Math.random() * this.props.authors.length)
-          ]
-        }&printType=books&projection=lite&orderBy=relevance&maxResults=1&startIndex=0&fields=items(selfLink,volumeInfo(title,authors,description,imageLinks))`,
-        {
-          signal: this.controller.signal,
-        }
-      );
-      const data = await response.json();
-      this.setState({ randomBook: data.items[0] });
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
 
   guessInputChangeHandler = (e) => {
     this.setState({ guessInput: e.target.value });
@@ -68,7 +41,6 @@ class ClassComponent extends Component {
   guessSubmitHandler = () => {
     // dispatch 'CHECKGUESS' action to the redux store
     this.props.checkGuess(this.state.guessInput);
-    // TODO: doublecheck why accessing prevState is better
     this.setState((state, props) => ({
       previousGuesses: [...state.previousGuesses, state.guessInput],
       guessInput: "",
@@ -79,31 +51,7 @@ class ClassComponent extends Component {
     return (
       <div className="component">
         <h2>Class Component</h2>
-        <Grid container spacing={2} justify="center">
-          <Grid
-            container
-            item
-            xs={6}
-            spacing={1}
-            direction="column"
-            alignItems="center"
-          >
-            <h3>Book of the Day</h3>
-            <List>
-              {this.state.randomBook && (
-                <div className="bookInfo" key={this.state.randomBook.selfLink}>
-                  <img
-                    src={this.state.randomBook.volumeInfo.imageLinks.thumbnail}
-                    alt={this.state.randomBook.volumeInfo.title}
-                  />
-                  <ListItemText
-                    primary={this.state.randomBook.volumeInfo.title}
-                    secondary={`by ${this.state.randomBook.volumeInfo.authors[0]}`}
-                  />
-                </div>
-              )}
-            </List>
-          </Grid>
+        <Grid container spacing={1} justify="center">
           <Grid
             container
             item
@@ -169,7 +117,6 @@ const mapStateToProps = (state) => {
     guessedCorrectly: state.class.guessedCorrectly,
     gameOver: state.class.gameOver,
     secretPhrase: state.class.secretWord,
-    authors: state.class.authors,
   };
 };
 
@@ -177,7 +124,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     resetGame: () => dispatch({ type: "RESETCLASS" }),
     checkGuess: (guess) => dispatch({ type: "CHECKGUESSCLASS", payload: guess }),
-    selectPhrase: () => dispatch({ type: "SELECTPHRASECLASS" }),
   };
 };
 

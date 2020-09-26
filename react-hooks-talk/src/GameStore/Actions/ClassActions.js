@@ -1,7 +1,3 @@
-const selectPhrase = () => {
-  return { type: "SELECTPHRASECLASS" };
-};
-
 const reset = () => {
   return { type: 'RESETCLASS' };
 };
