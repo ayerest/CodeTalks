@@ -7,50 +7,10 @@ import { Grid } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 
-// could extract the random book function to a custom hook as well
-const useCustomHookName = () => {
-  const dispatch = useDispatch();
-  const [gettingSecretPhrase, setGettingSecretPhrase] = useState(true);
-
-  // only runs when component is mounted (dispatch and setGettingSecretPhrase are stable aka won't change)
-  useEffect(() => {
-    console.log("use effect");
-    // dispatch action to select secret phrase
-    const timer = setTimeout(() => {
-      dispatch(actions.selectPhrase());
-      setGettingSecretPhrase(false);
-    }, 2000);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [dispatch, setGettingSecretPhrase]);
-  return gettingSecretPhrase;
-};
-
-const FunctionalComponent = () => {
-  const [guessInput, setGuessInput] = useState("Guess");
-  const [previousGuesses, setPreviousGuesses] = useState([]);
-  const gettingSecretPhrase = useCustomHookName();
+const useOtherCustomHook = () => {
   const [randomBook, setRandomBook] = useState(null);
-  const guessedCorrectly = useSelector(
-    (state) => state.functional.guessedCorrectly
-  );
-  const gameOver = useSelector((state) => state.functional.gameOver);
-  const guessNumber = useSelector((state) => state.functional.guessNumber);
   const authors = useSelector((state) => state.functional.authors);
-
-  const dispatch = useDispatch();
-
-  // runs on every document.title change
-  useEffect(() => {
-    document.title = guessInput;
-  });
-
-  // only runs when component is mounted
-  useEffect(() => {
-    dispatch(actions.reset());
-  }, [dispatch]);
-
+  // only runs on load because setFunction is stable and authors won't change
   useEffect(() => {
     const controller = new AbortController();
     const getRandomBook = async () => {
@@ -74,13 +34,56 @@ const FunctionalComponent = () => {
       controller.abort();
     };
   }, [authors, setRandomBook]);
+  return randomBook;
+};
+
+const useCustomHookName = () => {
+  const dispatch = useDispatch();
+  const [gettingSecretPhrase, setGettingSecretPhrase] = useState(true);
+  // only runs when component is mounted (dispatch and setGettingSecretPhrase are stable aka won't change)
+  useEffect(() => {
+    console.log("use effect");
+    // dispatch action to select secret phrase
+    const timer = setTimeout(() => {
+      dispatch(actions.selectPhrase());
+      setGettingSecretPhrase(false);
+    }, 2000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [dispatch, setGettingSecretPhrase]);
+  return gettingSecretPhrase;
+};
+
+const FunctionalComponent = () => {
+  const [guessInput, setGuessInput] = useState("Guess");
+  const [previousGuesses, setPreviousGuesses] = useState([]);
+  const randomBook = useOtherCustomHook();
+  const gettingSecretPhrase = useCustomHookName();
+  const guessedCorrectly = useSelector(
+    (state) => state.functional.guessedCorrectly
+  );
+  const gameOver = useSelector((state) => state.functional.gameOver);
+  const guessNumber = useSelector((state) => state.functional.guessNumber);
+
+  const dispatch = useDispatch();
+
+  // runs on every update
+  useEffect(() => {
+    document.title = guessInput;
+  });
+
+  // only runs when component is mounted because dispatch is stable
+  useEffect(() => {
+    dispatch(actions.reset());
+  }, [dispatch]);
 
   const guessInputChangeHandler = (e) => {
     setGuessInput(e.target.value);
   };
 
   const guessSubmitHandler = () => {
-    // dispatch redux store
+    // add guess to previous guesses list, dispatch redux store, reset guess input
     setPreviousGuesses((prevState) => [...prevState, guessInput]);
     dispatch(actions.checkGuess(guessInput));
     setGuessInput("");
