@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Switch from "@material-ui/core/Switch";
 import Container from "@material-ui/core/Container";
 import ClassComponent from "../GameNotes/ClassComponent";
-// import FunctionalComponent from "../GameNotes/FunctionalComponent";
-import FunctionalComponent from "./FunctionalComponent2";
+import FunctionalComponent from "../GameNotes/FunctionalComponent";
+// import FunctionalComponent from "./FunctionalComponent";
 
 import '../App.css';
 

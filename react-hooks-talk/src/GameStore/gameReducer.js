@@ -7,12 +7,21 @@ const initialState = {
   secretWords: [...phrases],
   guessedCorrectly: false,
   gameOver: false,
-  secretWord: '',
+  secretWord: "",
+  authors: [
+    "John Steinbeck",
+    "Jane Austen",
+    "Raymond Chandler",
+    "N.K. Jemisin",
+    "Maya Angelou",
+    "Charlotte Bronte",
+    "Mary Shelley",
+  ],
 };
 
 const FunctionalGameReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SELECTPHRASEFUNCTIONAL":
+    case "SELECTPHRASE":
       return {
         ...state,
         secretWord:
@@ -20,11 +29,11 @@ const FunctionalGameReducer = (state = initialState, action) => {
             Math.floor(Math.random() * state.secretWords.length)
           ],
       };
-    case "RESETFUNCTIONAL":
+    case "RESET":
       return {
         ...initialState,
       };
-    case "CHECKGUESSFUNCTIONAL":
+    case "CHECKGUESS":
       if (action.payload === state.secretWord) {
         return {
           ...state,

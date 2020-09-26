@@ -8,8 +8,8 @@ import { createStore, combineReducers } from "redux";
 import { Provider } from 'react-redux';
 import FunctionalGameReducer from './GameStore/gameReducer';
 import ClassGameReducer from './GameStore/classGameReducer';
-// import ClassBooksReducer from './BookStore/ClassBooksReducer';
-// import FunctionalBooksReducer from './BookStore/FunctionalBooksReducer';
+// import ClassBooksReducer from './BookShelf/BookStore/ClassBooksReducer';
+// import FunctionalBooksReducer from './BookShelf/BookStore/FunctionalBooksReducer';
 
 const rootReducer = combineReducers({
   class: ClassGameReducer,

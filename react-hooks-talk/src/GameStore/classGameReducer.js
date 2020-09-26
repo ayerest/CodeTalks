@@ -8,6 +8,15 @@ const initialState = {
   guessedCorrectly: false,
   gameOver: false,
   secretWord: "",
+  authors: [
+    "John Steinbeck",
+    "Jane Austen",
+    "Raymond Chandler",
+    "N.K. Jemisin",
+    "Maya Angelou",
+    "Charlotte Bronte",
+    "Mary Shelley",
+  ],
 };
 
 const ClassGameReducer = (state = initialState, action) => {

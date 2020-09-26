@@ -13,7 +13,6 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import AddIcon from "@material-ui/icons/Add";
 import SaveIcon from "@material-ui/icons/Save";
 import Switch from "@material-ui/core/Switch";
-// import Container from "@material-ui/core/Container";
 
 class ClassComponentsContainer extends Component {
   constructor(props) {

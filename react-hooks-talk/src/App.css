@@ -72,3 +72,9 @@
   background-color: thistle;
   /* margin: 1rem; */
 }
+
+.bookInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
