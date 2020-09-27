@@ -12,7 +12,7 @@ const initialState = {
 
 const ClassGameReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "RESETCLASS":
+    case "LOADGAME":
       return {
         ...initialState,
         secretWord:

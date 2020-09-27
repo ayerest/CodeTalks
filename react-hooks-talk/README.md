@@ -1,68 +1,62 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Live Demo Steps:
 
-## Available Scripts
+1) Copy the input field and button
+   a) Add guessInput to state with useState
+   b) Copy the input change handler function (update guessInput state)
+   c) Copy the submit handler function
+2) Copy the previousGuesses list
+   a) Add previousGuesses to state
+   b) Update previousGuesses in submit handler function
+   c) Update guessInput to empty string in submit handler function
+   d) TODO to dispatch checkGuess action
+3) Add useEffect to update document.title
+4) Copy the guesses remaining
+   a) Hook up to the redux store with useSelector
+5) Add useEffect to load the game
+   a) Add loadingGame to state
+   b) Copy loadingGame logic
+   c) updating loadingGame but wrap in setTimeout
+   d) dispatch load action to redux store in timeout
+6) Add useEffect cleanup function to fix memory leak
+   a) clearTimeout
+7) Finish TODO from step 2d
+   a) Dispatch checkguess action
+8) Copy guessedCorrectly/gameOver logic
+   a) Hook up to redux store
+9) Extract custom hook
 
-In the project directory, you can run:
 
-### `yarn start`
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+<!-- 1. Copy JSX from Class Component
+2. Copy simple handler functions first and leave body of functions blank
+3. Find the references to this.props redux stuff 
+    1. create variables with dummy info for now
+    2. add comments to come back to them later
+4. Find all references to this.state
+    1. Delete them and create useState refs
+    2. Explain the difference between class component state and functional component state 
+        1. objects vs primitives
+        2. Merging state vs not
+        3. Can call multiple times and order of state variables matters
+    3. Now find all this.setState refs
+        1. Delete and add setWhatever functions up
+5. Create a useEffect function that is empty except for a console.log
+    1. Show how often the function is fired
+    2. Now fill in with the document.title update
+    3. Show that one useEffect does what componentDidMount and componentDidUpdate did for the class component
+6. Add another useEffect function for selecting the secret word (redux action)
+    1. Now will need to set up redux logic
+        1. Introduce useSelector
+            1. Now will be a good time to quickly replace the dummy info with real info
+        2. Introduce useDispatch
+        3. Wrap in a setTimeout
+    2. Don’t forget to add dependencies for useEffect and talk about the dependency array
+    3. Show the memory leak error 
+        1. Set up the cleanup effect in the return function of the useEffect
+7. Add redux logic to check the guess
+8. Add redux logic to reset the game when the component is removed/reloaded
+    1. Talk about how unrelated logic can be split up in different useEffect calls
+9. Finally extract the useEffect to get the secret phrase to a custom Hook -->

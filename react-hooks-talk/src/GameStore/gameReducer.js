@@ -12,7 +12,7 @@ const initialState = {
 
 const FunctionalGameReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "RESET":
+    case "LOAD":
       return {
         ...initialState,
         secretWord:

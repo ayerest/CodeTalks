@@ -10,7 +10,17 @@ const FunctionalComponent = () => {
   return (
     <div className="component">
       <h2>Functional Component</h2>
-      
+      <Grid container spacing={1} justify="center">
+        <Grid
+          container
+          item
+          xs={6}
+          spacing={1}
+          direction="column"
+          alignItems="center"
+        >
+        </Grid>
+      </Grid>
     </div>
   );
 };

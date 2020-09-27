@@ -13,7 +13,7 @@ const useCustomHookName = () => {
     console.log("use effect");
     // dispatch action to resetGame
     const timer = setTimeout(() => {
-      dispatch(actions.reset());
+      dispatch(actions.load());
       setGettingSecretPhrase(false);
     }, 2000);
     return () => {
@@ -63,8 +63,7 @@ const FunctionalComponent = () => {
           direction="column"
           alignItems="center"
         >
-          {gettingSecretPhrase && <h3>Selecting the secret phrase...</h3>}
-          {!gettingSecretPhrase && <h3>Secret phrase has been selected</h3>}
+          {gettingSecretPhrase ? <h3>Selecting the secret phrase...</h3>: <h3>Secret phrase has been selected</h3>}
           {guessedCorrectly && <h3>You won!</h3>}
           {gameOver && !guessedCorrectly && <h3>No more guesses!</h3>}
           <div className="counter-holder">

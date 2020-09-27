@@ -1,9 +1,9 @@
-const reset = () => {
-  return { type: "RESET" };
+const load = () => {
+  return { type: "LOAD" };
 };
 
 const checkGuess = (guess) => {
   return { type: "CHECKGUESS", payload: guess };
 }
 
-export { reset, checkGuess };
+export { load, checkGuess };

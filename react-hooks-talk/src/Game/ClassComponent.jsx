@@ -16,9 +16,8 @@ class ClassComponent extends Component {
 
   componentDidMount() {
     console.log("Component did mount");
-    // dispatch action to resetGame
     this.delay = setTimeout(() => {
-      this.props.resetGame();
+      this.props.loadGame();
       this.setState({ gettingSecretPhrase: false });
     }, 2000);
     document.title = this.state.guessInput;
@@ -122,7 +121,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    resetGame: () => dispatch({ type: "RESETCLASS" }),
+    loadGame: () => dispatch({ type: "LOADCLASS" }),
     checkGuess: (guess) =>
       dispatch({ type: "CHECKGUESSCLASS", payload: guess }),
   };
