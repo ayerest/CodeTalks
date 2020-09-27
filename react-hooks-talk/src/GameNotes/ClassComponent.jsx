@@ -13,7 +13,7 @@ class ClassComponent extends Component {
       guessInput: "Guess",
       previousGuesses: [],
       loadingGame: true,
-      width: window.innerWidth
+      windowWidth: window.innerWidth
     };
     // Step 2a: add previousGuesses to state
   }
@@ -50,7 +50,7 @@ class ClassComponent extends Component {
   }
 
   handleResize = () => {
-    this.setState({width: window.innerWidth});
+    this.setState({windowWidth: window.innerWidth});
   }
 
   // Step 1b: add the change handler function and update guessInput state value
@@ -74,7 +74,7 @@ class ClassComponent extends Component {
     return (
       <div className="component class">
         <h2>Class Component</h2>
-        <p>Window width: {this.state.width}</p>
+        <p>Window width: {this.state.windowWidth}</p>
         <Grid container spacing={1} justify="center">
           <Grid
             container

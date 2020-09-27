@@ -6,6 +6,7 @@ Step 0 --> Brief description of class component functionality
    a) Add guessInput to state with useState
    b) Copy the input change handler function (update guessInput state)
    c) Copy the submit handler function
+   d) TODO for gameOver value
 2) Copy the previousGuesses list
    a) Add previousGuesses to state
    b) Update previousGuesses in submit handler function
@@ -27,9 +28,9 @@ Step 0 --> Brief description of class component functionality
    d) dispatch load action to redux store in timeout
 6) Add useEffect cleanup function to fix memory leak
    a) clearTimeout
-   b) add useEffect w/ only a cleanup function to reset the game
 7) Finish TODO from step 2d
    a) Dispatch checkguess action
+   b) add useEffect w/ only a cleanup function to reset the game
 8) Copy guessedCorrectly/gameOver logic
    a) Hook up to redux store
 9) Extract custom hook
