@@ -1,5 +1,7 @@
 Live Demo Steps:
 
+Step 0 --> Brief description of class component functionality
+
 1) Copy the input field and button
    a) Add guessInput to state with useState
    b) Copy the input change handler function (update guessInput state)
@@ -7,9 +9,15 @@ Live Demo Steps:
 2) Copy the previousGuesses list
    a) Add previousGuesses to state
    b) Update previousGuesses in submit handler function
-   c) Update guessInput to empty string in submit handler function
+   c) Update guessInput to empty string in submit handler function ?? (optional - see step 3a)
    d) TODO to dispatch checkGuess action
 3) Add useEffect to update document.title
+   a) Show that useEffect runs even when guessInput isn't changing (submitHandler)
+   b) Add dependency array with guessInput so that the useEffect only runs when the input changes
+   c) Copy window width section and add to state
+   d) Add useEffect to subscribe to window resize event
+   e) Add windowWidth to dependency array 
+   f) Unsubscribe in cleanup function
 4) Copy the guesses remaining
    a) Hook up to the redux store with useSelector
 5) Add useEffect to load the game
@@ -19,6 +27,7 @@ Live Demo Steps:
    d) dispatch load action to redux store in timeout
 6) Add useEffect cleanup function to fix memory leak
    a) clearTimeout
+   b) add useEffect w/ only a cleanup function to reset the game
 7) Finish TODO from step 2d
    a) Dispatch checkguess action
 8) Copy guessedCorrectly/gameOver logic

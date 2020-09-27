@@ -10,7 +10,6 @@ const useCustomHookName = () => {
   const [gettingSecretPhrase, setGettingSecretPhrase] = useState(true);
   // only runs when component is mounted (dispatch and setGettingSecretPhrase are stable aka won't change)
   useEffect(() => {
-    console.log("use effect");
     // dispatch action to resetGame
     const timer = setTimeout(() => {
       dispatch(actions.load());
@@ -26,6 +25,7 @@ const useCustomHookName = () => {
 const FunctionalComponent = () => {
   const [guessInput, setGuessInput] = useState("Guess");
   const [previousGuesses, setPreviousGuesses] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const gettingSecretPhrase = useCustomHookName();
   const guessedCorrectly = useSelector(
     (state) => state.functional.guessedCorrectly
@@ -37,8 +37,29 @@ const FunctionalComponent = () => {
 
   // runs on every update
   useEffect(() => {
+    console.log("use effect")
     document.title = guessInput;
-  });
+    // add guessInput to dependency array, then remove setting guess input to an empty string in the submit handler
+  }, [guessInput]);
+
+  useEffect(() => {
+    console.log("window width");
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    }
+  }, [windowWidth]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(actions.reset())
+      console.log("reset game")
+    }
+  }, [dispatch]);
+
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  }
 
   const guessInputChangeHandler = (e) => {
     setGuessInput(e.target.value);
@@ -48,12 +69,13 @@ const FunctionalComponent = () => {
     // add guess to previous guesses list, dispatch redux store, reset guess input
     setPreviousGuesses((prevState) => [...prevState, guessInput]);
     dispatch(actions.checkGuess(guessInput));
-    setGuessInput("");
+    // setGuessInput("");
   };
 
   return (
     <div className="component">
       <h2>Functional Component</h2>
+      <p>Window width: {windowWidth}</p>
       <Grid container spacing={1} justify="center">
         <Grid
           container

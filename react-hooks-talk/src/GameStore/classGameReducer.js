@@ -12,6 +12,10 @@ const initialState = {
 
 const ClassGameReducer = (state = initialState, action) => {
   switch (action.type) {
+    case "RESETGAME":
+      return {
+        ...initialState,
+      }
     case "LOADGAME":
       return {
         ...initialState,
@@ -21,7 +25,7 @@ const ClassGameReducer = (state = initialState, action) => {
           ],
       };
     case "CHECKGUESSCLASS":
-      if (action.payload === state.secretWord) {
+      if (action.payload.toLowerCase() === state.secretWord.toLowerCase()) {
         return {
           ...state,
           guessedCorrectly: true,
@@ -35,6 +39,12 @@ const ClassGameReducer = (state = initialState, action) => {
           guessNumber: state.guessNumber - 1,
           gameOver: true,
         };
+      }
+      if (state.guessNumber === 0) {
+        return {
+          ...state,
+          gameOver: true,
+        }
       }
       return {
         ...state,

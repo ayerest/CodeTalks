@@ -13,6 +13,7 @@ class ClassComponent extends Component {
       guessInput: "Guess",
       previousGuesses: [],
       loadingGame: true,
+      width: window.innerWidth
     };
     // Step 2a: add previousGuesses to state
   }
@@ -30,6 +31,8 @@ class ClassComponent extends Component {
       this.setState({ loadingGame: false });
     }, 2000);
     document.title = this.state.guessInput;
+    // Step 3a: add event listener in a separate useEffect
+    window.addEventListener('resize', this.handleResize);
   }
   // Step 3: add useEffect to update document.title
   componentDidUpdate() {
@@ -40,6 +43,14 @@ class ClassComponent extends Component {
   componentWillUnmount() {
     console.log("Component will unmount");
     clearTimeout(this.delay);
+    // Step ?
+    this.props.resetGame();
+    // Step 3b: remove eventListener in cleanup function
+    window.removeEventListener('resize', this.handleResize);
+  }
+
+  handleResize = () => {
+    this.setState({width: window.innerWidth});
   }
 
   // Step 1b: add the change handler function and update guessInput state value
@@ -63,6 +74,7 @@ class ClassComponent extends Component {
     return (
       <div className="component class">
         <h2>Class Component</h2>
+        <p>Window width: {this.state.width}</p>
         <Grid container spacing={1} justify="center">
           <Grid
             container
@@ -72,14 +84,16 @@ class ClassComponent extends Component {
             direction="column"
             alignItems="center"
           >
-          {/* Step 5b: copy loadingGame logic */}
-            {this.state.loadingGame ? 
-              <h3>Selecting the secret phrase...</h3> : 
-              <h3>Secret phrase has been selected</h3>}
+            {/* Step 5b: copy loadingGame logic */}
+            {this.state.loadingGame ? (
+              <h3>Selecting the secret phrase...</h3>
+            ) : (
+              <h3>Secret phrase has been selected</h3>
+            )}
             {/* Step 8: copy logic
             Step 8a: connect to redux store */}
             {this.props.guessedCorrectly && <h3>You won!</h3>}
-            {this.props.list && !this.props.guessedCorrectly && (
+            {this.props.gameOver && !this.props.guessedCorrectly && (
               <h3>No more guesses!</h3>
             )}
             {/* Step 4: copy the guesses remaining 
@@ -101,9 +115,7 @@ class ClassComponent extends Component {
                   variant="contained"
                   color="primary"
                   onClick={this.guessSubmitHandler}
-                  disabled={
-                    this.props.gameOver || this.state.loadingGame
-                  }
+                  disabled={this.props.gameOver || this.state.loadingGame}
                 >
                   Submit Guess
                 </Button>
@@ -138,6 +150,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    resetGame: () => dispatch({ type: 'RESETGAME' }),
     loadGame: () => dispatch({ type: "LOADGAME" }),
     checkGuess: (guess) => dispatch({ type: "CHECKGUESSCLASS", payload: guess }),
   };

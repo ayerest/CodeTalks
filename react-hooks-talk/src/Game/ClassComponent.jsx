@@ -10,17 +10,19 @@ class ClassComponent extends Component {
     this.state = {
       guessInput: "Guess",
       previousGuesses: [],
-      gettingSecretPhrase: true,
+      loadingGame: true,
+      width: window.innerWidth,
     };
   }
-
+  
   componentDidMount() {
     console.log("Component did mount");
     this.delay = setTimeout(() => {
       this.props.loadGame();
-      this.setState({ gettingSecretPhrase: false });
+      this.setState({ loadingGame: false });
     }, 2000);
     document.title = this.state.guessInput;
+    window.addEventListener("resize", this.handleResize);
   }
 
   componentDidUpdate() {
@@ -31,14 +33,19 @@ class ClassComponent extends Component {
   componentWillUnmount() {
     console.log("Component will unmount");
     clearTimeout(this.delay);
+    this.props.resetGame();
+    window.removeEventListener("resize", this.handleResize);
   }
+
+  handleResize = () => {
+    this.setState({ width: window.innerWidth });
+  };
 
   guessInputChangeHandler = (e) => {
     this.setState({ guessInput: e.target.value });
   };
 
   guessSubmitHandler = () => {
-    // dispatch 'CHECKGUESS' action to the redux store
     this.props.checkGuess(this.state.guessInput);
     this.setState((state, props) => ({
       previousGuesses: [...state.previousGuesses, state.guessInput],
@@ -48,8 +55,9 @@ class ClassComponent extends Component {
 
   render() {
     return (
-      <div className="component">
+      <div className="component class">
         <h2>Class Component</h2>
+        <p>Window width: {this.state.width}</p>
         <Grid container spacing={1} justify="center">
           <Grid
             container
@@ -59,10 +67,9 @@ class ClassComponent extends Component {
             direction="column"
             alignItems="center"
           >
-            {this.state.gettingSecretPhrase && (
+            {this.state.loadingGame ? (
               <h3>Selecting the secret phrase...</h3>
-            )}
-            {!this.state.gettingSecretPhrase && (
+            ) : (
               <h3>Secret phrase has been selected</h3>
             )}
             {this.props.guessedCorrectly && <h3>You won!</h3>}
@@ -85,9 +92,7 @@ class ClassComponent extends Component {
                   variant="contained"
                   color="primary"
                   onClick={this.guessSubmitHandler}
-                  disabled={
-                    this.props.gameOver || this.state.gettingSecretPhrase
-                  }
+                  disabled={this.props.gameOver || this.state.loadingGame}
                 >
                   Submit Guess
                 </Button>
@@ -121,7 +126,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadGame: () => dispatch({ type: "LOADCLASS" }),
+    resetGame: () => dispatch({ type: "RESETGAME" }),
+    loadGame: () => dispatch({ type: "LOADGAME" }),
     checkGuess: (guess) =>
       dispatch({ type: "CHECKGUESSCLASS", payload: guess }),
   };
