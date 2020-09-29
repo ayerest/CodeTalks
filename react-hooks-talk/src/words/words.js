@@ -1,3 +1,3 @@
-const phrases = ["Complicated", "Sk8er Boi", "Fancy Kitchens"];
+const phrases = ["Complicated", "Heist", "Sabretooth"];
 
 export default phrases;
