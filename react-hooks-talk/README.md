@@ -1,3 +1,5 @@
+*Tuesday September 27th CodeTalk*
+
 Live Demo Steps:
 
 Step 0 --> Brief description of class component functionality
