@@ -4,6 +4,8 @@ import Container from "@material-ui/core/Container";
 // import ClassComponent from "../GameNotes/ClassComponent";
 // import FunctionalComponent from "../GameNotes/FunctionalComponent";
 import FunctionalComponent from "./FunctionalComponent";
+import AbridgedFunctionalComponent from "./AbridgedFunctionalComponent";
+import AbridgedClassComponent from "./AbridgedClassComponent";
 import ClassComponent from './ClassComponent';
 
 import '../App.css';
@@ -31,8 +33,8 @@ class App extends Component {
             inputProps={{ "aria-label": "primary checkbox" }}
           />
           <Container>
-            {this.state.displayClassComponent && <ClassComponent />}
-            {!this.state.displayClassComponent && <FunctionalComponent />}
+            {this.state.displayClassComponent && <AbridgedClassComponent />}
+            {!this.state.displayClassComponent && <AbridgedFunctionalComponent />}
           </Container>
       </Container>
     );

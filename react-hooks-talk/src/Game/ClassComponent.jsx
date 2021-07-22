@@ -58,7 +58,7 @@ class ClassComponent extends Component {
       <div className="component class">
         <h2>Class Component</h2>
         <p>Window width: {this.state.windowWidth}</p>
-        <Grid container spacing={1} justify="center">
+        <Grid container spacing={1} justifyContent="center">
           <Grid
             container
             item

@@ -76,7 +76,7 @@ const FunctionalComponent = () => {
     <div className="component">
       <h2>Functional Component</h2>
       <p>Window width: {windowWidth}</p>
-      <Grid container spacing={1} justify="center">
+      <Grid container spacing={1} justifyContent="center">
         <Grid
           container
           item

@@ -17,11 +17,11 @@ const useCustomHook = () => {
     return () => {
       window.removeEventListener('resize', handleResize);
     }
-  }, [windowWidth]);
+  }, []);
   return windowWidth;
 }
 
-const FunctionalComponent = ({ thisThing, thisOtherThing }) => {
+const FunctionalComponent = () => {
   const [guessInput, setGuessInput] = useState('');
   const [loadingGame, setLoadingGame] = useState(true);
   const [previousGuesses, setPreviousGuesses] = useState([]);
@@ -67,7 +67,7 @@ const FunctionalComponent = ({ thisThing, thisOtherThing }) => {
       <h2>Functional Component</h2>
               <p>Window width: {windowWidth}</p>
 
-      <Grid container spacing={1} justify="center">
+      <Grid container spacing={1} justifyContent="center">
         <Grid
           container
           item
