@@ -1,23 +1,23 @@
 import { createStore, combineReducers } from "redux";
 
 const initialState = {
-  speed: 'ludicrous',
+  speed: 'light',
   accelerating: true
 };
 
 const functionalReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "LIGHT": 
+    case "Light": 
       return {
         ...state,
         speed: 'light'
       }
-    case "RIDICULOUS":
+    case "Ridiculous":
       return {
         ...state,
         speed: 'ridiculous'
       };
-    case "LUDICROUS":
+    case "Ludicrous":
       return {
         ...state,
         speed: 'ludicrous'

@@ -13,8 +13,8 @@
   }
 }
 img {
-  height: 100px;
-  width: 100px;
+  height: 70vh;
+  width: 70vw;
 }
 .App-header {
   min-height: 100vh;
@@ -40,15 +40,19 @@ img {
     transform: translateY(0px);
   }
 }
-
+/* 
 .ludicrous {
   background-image: url('/Users/irissilverman/Development/code/CodeTalks/react-redux-hooks-talk/src/app/ludicrousspeed.jpg');
   object-fit: contain;
   height: 70vh;
   width: 70vw;
-}
+} */
 
 .selector {
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.selector {
+
 }
