@@ -35,7 +35,7 @@ class HyperjetEngine extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    speed: state.functional.speed,
+    speed: state.speed,
   }
 }
 

@@ -1,11 +1,13 @@
-import { createStore, combineReducers } from "redux";
+import { createStore } from "redux";
 
 const initialState = {
   speed: 'light',
-  accelerating: true
+  accelerating: true,
+  jammed: false,
+  jamFlavor: '',
 };
 
-const functionalReducer = (state = initialState, action) => {
+const SpaceBallsReducer = (state = initialState, action) => {
   switch (action.type) {
     case "Light": 
       return {
@@ -22,6 +24,12 @@ const functionalReducer = (state = initialState, action) => {
         ...state,
         speed: 'ludicrous'
       };
+    case "Jam":
+      return {
+        ...state,
+        jammed: true,
+        jamFlavor: action.payload,
+      };
     default:
       return {
         ...state,
@@ -29,10 +37,6 @@ const functionalReducer = (state = initialState, action) => {
   }
 };
 
-const rootReducer = combineReducers({
-  functional: functionalReducer,
-});
-
-const store = createStore(rootReducer);
+const store = createStore(SpaceBallsReducer, initialState);
 
 export default store;
