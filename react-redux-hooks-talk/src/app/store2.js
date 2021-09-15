@@ -37,6 +37,6 @@ const SpaceBallsReducer = (state = initialState, action) => {
   }
 };
 
-const store = createStore(SpaceBallsReducer, initialState);
+const store = createStore(SpaceBallsReducer);
 
 export default store;

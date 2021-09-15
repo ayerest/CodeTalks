@@ -6,7 +6,7 @@ import light from '../../images/light-speed.jpg';
 import ridiculous from '../../images/ridiculous-speed.png'
 
 const HyperjetEngine = () => {
-  const speed = useSelector(state => state.functional.speed);
+  const speed = useSelector(state => state.speed);
   const engineSpeed = () => {
     let src = ''
     switch(speed) {

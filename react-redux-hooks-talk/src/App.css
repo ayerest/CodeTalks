@@ -40,19 +40,27 @@ img {
     transform: translateY(0px);
   }
 }
-/* 
-.ludicrous {
-  background-image: url('/Users/irissilverman/Development/code/CodeTalks/react-redux-hooks-talk/src/app/ludicrousspeed.jpg');
-  object-fit: contain;
-  height: 70vh;
-  width: 70vw;
-} */
 
-.selector {
-  font-size: 1.5rem;
+.speedControl {
+  font-size: 1.25rem;
   font-weight: bold;
+  padding: 1rem;
+  color: white;
+  font-weight: bold;
+  margin: 1rem .5rem;
+}
+.speedControl:hover {
+  opacity: .9;
 }
 
-.selector {
+.speedControl.light {
+  background-color: #058541;
+}
 
+.speedControl.ridiculous {
+  background-color: orange;
+}
+
+.speedControl.ludicrous {
+  background-color: crimson;
 }
