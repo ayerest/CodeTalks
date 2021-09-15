@@ -3,21 +3,14 @@ import { connect } from 'react-redux';
 
 class SpeedSelector extends Component {
   changeSpeedHandler = (e) => {
-    console.log(e.target.value, "class")
     this.props.changeSpeed(e.target.value);
   }
-  // TODO: change to buttons styled like the movie
   render() {
     return (
       <div className="selector">
-        <label>Choose a speed:</label>
-  
-        <select name="speed" id="speed-select" onChange={this.changeSpeedHandler}>
-          <option value="">--Please choose an option--</option>
-          <option value="Light">Light</option>
-          <option value="Ridiculous">Ridiculous</option>
-          <option value="Ludicrous">Ludicrous</option>
-        </select>
+        <button className={`light speedControl ${this.props.speed !== 'light' ? 'notSelected' : null}`} onClick={this.changeSpeedHandler} value="Light">LIGHT SPEED</button>
+      <button className={`ridiculous speedControl ${this.props.speed !== 'ridiculous' ? 'notSelected' : null}`} onClick={this.changeSpeedHandler} value="Ridiculous">RIDICULOUS SPEED</button>
+      <button className={`ludicrous speedControl ${this.props.speed !== 'ludicrous' ? 'notSelected' : null}`} onClick={this.changeSpeedHandler} value="Ludicrous">LUDICROUS SPEED</button>
       </div>
     )
   }
@@ -29,4 +22,10 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(SpeedSelector);
+const mapStateToProps = (state) => {
+  return {
+    speed: state.speed,
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SpeedSelector);

@@ -1,8 +1,8 @@
 import React from 'react';
-import HyperjetEngine from './Components/HyperjetEngine/HyperjetEngine';
-// import HyperjetEngine from './ClassComponents/HyperjetEngine';
-// import SpeedSelector from './ClassComponents/SpeedSelector';
-import SpeedSelector from './Components/SpeedSelector/SpeedSelector';
+import HyperjetEngine from './ClassComponents/HyperjetEngine';
+import SpeedSelector from './ClassComponents/SpeedSelector';
+// import HyperjetEngine from './Components/HyperjetEngine/HyperjetEngine';
+// import SpeedSelector from './Components/SpeedSelector/SpeedSelector';
 import './App.css';
 // import MrRadar from './Components/MrRadar/MrRadar';
 // import Eagle5 from './Components/Eagle5/Eagle5';

@@ -53,6 +53,10 @@ img {
   opacity: .9;
 }
 
+.speedControl.notSelected {
+  opacity: 0.2;
+}
+
 .speedControl.light {
   background-color: #058541;
 }
